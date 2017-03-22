@@ -9,14 +9,15 @@
   },
   "repository": "ozum/fix-set",
   "keywords": [
-    "filter"
+    "filter",
+    "set"
   ],
   "author": "Özüm Eldoğan",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ozum/fix-filter/issues"
+    "url": "https://github.com/ozum/fix-set/issues"
   },
-  "homepage": "https://github.com/ozum/fix-filter#readme",
+  "homepage": "https://github.com/ozum/fix-set#readme",
   "devDependencies": {
     "babel-eslint": "^7.x",
     "code": "^4.x",
