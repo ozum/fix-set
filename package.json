@@ -1,0 +1,36 @@
+{
+  "name": "fix-set",
+  "version": "0.0.1",
+  "description": "Lets you define prefix and suffix rules to test strings against.",
+  "main": "index.js",
+  "scripts": {
+    "test": "lab --coverage --lint",
+    "doc": "jsdoc2md *.js lib/*.js | replace-between --target README.md --token API"
+  },
+  "repository": "ozum/fix-set",
+  "keywords": [
+    "filter"
+  ],
+  "author": "Özüm Eldoğan",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ozum/fix-filter/issues"
+  },
+  "homepage": "https://github.com/ozum/fix-filter#readme",
+  "devDependencies": {
+    "babel-eslint": "^7.x",
+    "code": "^4.x",
+    "eslint": "^3.x",
+    "eslint-config-airbnb": "^14.x",
+    "eslint-plugin-import": "^2.x",
+    "eslint-plugin-jsx-a11y": "^4.x",
+    "eslint-plugin-react": "^6.x",
+    "jsdoc-to-markdown": "^3.0.0",
+    "lab": "^13.x",
+    "replace-between": "^0.x"
+  },
+  "dependencies": {
+    "joi": "^10.2.2",
+    "lodash": "^4.17.4"
+  }
+}
