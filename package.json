@@ -1,6 +1,6 @@
 {
   "name": "fix-set",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Lets you define prefix and suffix rules to test strings against.",
   "main": "index.js",
   "scripts": {
