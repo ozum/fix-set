@@ -30,8 +30,7 @@
     "lab": "^13.x",
     "replace-between": "^0.x"
   },
-  "dependencies": {
-    "joi": "^10.2.2",
-    "lodash": "^4.17.4"
+  "peerDependencies": {
+    "joi": "^10.x"
   }
 }

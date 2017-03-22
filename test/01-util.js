@@ -112,3 +112,15 @@ describe('getNameWithouFix', () => {
     done();
   });
 });
+
+describe('escapeRegExp', () => {
+  it('should escape regexp', (done) => {
+    expect(util.escapeRegExp('a?')).to.equal('a\\?');
+    done();
+  });
+
+  it('should return undefined as it is', (done) => {
+    expect(util.escapeRegExp()).to.undefined();
+    done();
+  });
+});
