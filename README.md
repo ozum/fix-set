@@ -16,7 +16,7 @@ Possible use cases:
 ```js
   // Convert parameter names starting with 'q'
   // to database field names replacing 'q' prefix. 
-  const rule = new FixRule({
+  const fixSet = new FixSet({
     include: {
       prefixes:       'q',
       exceptPrefixes: 'qX',
@@ -26,28 +26,28 @@ Possible use cases:
   });
   
   // Usage with Array#filter, Array#map etc.
-  const parameters = formParameters.filter(param => rule.has(param));
+  const parameters = formParameters.filter(param => fixSet.has(param));
   const dbFields   = formParameters
-    .map(param => rule.getName(param))
+    .map(param => fixSet.getName(param))
     .filter(field => field !== undefined);
 ```
 
 ```js
   // Cover all strings starting with 'q' or 'r'. 
-  const rule = new FixRule({
+  const fixSet = new FixSet({
     include: {
       prefixes:      ['q', 'r'],
       replacePrefix: true,
       replaceSuffix: true
     }
   });
-  const name = rule.getName('qMemberName');   // 'MemberName'
-  const has  = rule.has('qMemberName');       // true
+  const name = fixSet.getName('qMemberName');   // 'MemberName'
+  const has  = fixSet.has('qMemberName');       // true
 ```
 
 ```js
   // Cover all strings starting with 'q' but not 'qX' 
-  const rule = new FixRule({
+  const fixSet = new FixSet({
     include: {
       prefixes:       'q',
       exceptPrefixes: 'qx',
@@ -56,16 +56,16 @@ Possible use cases:
     }
   });
   
-  const name       = rule.getName('qMemberName');   // 'MemberName'
-  const has        = rule.has('qMemberName');       // true
-  const otherField = rule.getName('qxOther');       // undefined
-  const otherHas   = rule.has('qxOther');           // false
+  const name       = fixSet.getName('qMemberName');   // 'MemberName'
+  const has        = fixSet.has('qMemberName');       // true
+  const otherField = fixSet.getName('qxOther');       // undefined
+  const otherHas   = fixSet.has('qxOther');           // false
 ```
 
 ```js
   // Cover all strings excluding which start with 'q'.
   // However include strings starting 'qX' even they start with 'q'. 
-  const rule = new FixRule({
+  const fixSet = new FixSet({
     exclude: {
       prefixes:       'q',
       exceptPrefixes: 'qX',
@@ -74,10 +74,10 @@ Possible use cases:
     }
   });
   
-  const name       = rule.getName('qMemberName');   // undefined
-  const has        = rule.has('qMemberName');       // false
-  const otherField = rule.getName('qxOther');       // Other
-  const otherHas   = rule.has('qxOther');           // true
+  const name       = fixSet.getName('qMemberName');   // undefined
+  const has        = fixSet.has('qMemberName');       // false
+  const otherField = fixSet.getName('qxOther');       // Other
+  const otherHas   = fixSet.has('qxOther');           // true
 ```
 
 # API
