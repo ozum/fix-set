@@ -14,20 +14,32 @@ Possible use cases:
 # Synopsis
 
 ```js
-  // Convert parameter names starting with 'q' to database filed names replacing 'q' prefix. 
+  // Convert parameter names starting with 'q'
+  // to database field names replacing 'q' prefix. 
   const rule = new FixRule({
-    include: { prefixes: 'q', exceptPrefixes: 'qX', replacePrefix: true, replaceSuffix: true }
+    include: {
+      prefixes:       'q',
+      exceptPrefixes: 'qX',
+      replacePrefix:  true,
+      replaceSuffix:  true
+    }
   });
   
   // Usage with Array#filter, Array#map etc.
   const parameters = formParameters.filter(param => rule.has(param));
-  const dbFields   = formParameters.map(param => rule.getName(param)).filter(field => field !== undefined);
+  const dbFields   = formParameters
+    .map(param => rule.getName(param))
+    .filter(field => field !== undefined);
 ```
 
 ```js
   // Cover all strings starting with 'q' or 'r'. 
   const rule = new FixRule({
-    include: { prefixes: ['q', 'r'], replacePrefix: true, replaceSuffix: true }
+    include: {
+      prefixes:      ['q', 'r'],
+      replacePrefix: true,
+      replaceSuffix: true
+    }
   });
   const name = rule.getName('qMemberName');   // 'MemberName'
   const has  = rule.has('qMemberName');       // true
@@ -36,7 +48,12 @@ Possible use cases:
 ```js
   // Cover all strings starting with 'q' but not 'qX' 
   const rule = new FixRule({
-    include: { prefixes: 'q', exceptPrefixes: 'qx', replacePrefix: true, replaceSuffix: true }
+    include: {
+      prefixes:       'q',
+      exceptPrefixes: 'qx',
+      replacePrefix:  true,
+      replaceSuffix:  true
+    }
   });
   
   const name       = rule.getName('qMemberName');   // 'MemberName'
@@ -46,9 +63,15 @@ Possible use cases:
 ```
 
 ```js
-  // Cover all strings excluding which start with 'q'. However include strings starting 'qX' even they start with 'q'. 
+  // Cover all strings excluding which start with 'q'.
+  // However include strings starting 'qX' even they start with 'q'. 
   const rule = new FixRule({
-    exclude: { prefixes: 'q', exceptPrefixes: 'qX', replacePrefix: true, replaceSuffix: true }
+    exclude: {
+      prefixes:       'q',
+      exceptPrefixes: 'qX',
+      replacePrefix:  true,
+      replaceSuffix:  true
+    }
   });
   
   const name       = rule.getName('qMemberName');   // undefined
