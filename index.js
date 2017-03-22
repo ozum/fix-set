@@ -8,7 +8,8 @@ const internalData = new WeakMap();
  */
 class FixSet {
   /**
-   * Creates FixSet object.
+   * Creates FixSet object. If no `include` or `exclude` parameters provided or empty configurations are provided, they
+   * would be skipped.
    * @param {RuleConfig} [include]  - Inclusion rule configuration.
    * @param {RuleConfig} [exclude]  - Exclusion rule configuration.
    */
@@ -21,8 +22,8 @@ class FixSet {
      * @property {Rule} [exclude]   - Rule instance for excluded elements.
      */
     const internal   = internalData.set(this, {}).get(this);
-    internal.include = include && new Rule(include);
-    internal.exclude = exclude && new Rule(exclude);
+    internal.include = include && Object.keys(include).length > 0 && new Rule(include);
+    internal.exclude = exclude && Object.keys(exclude).length > 0 && new Rule(exclude);
   }
 
   /**

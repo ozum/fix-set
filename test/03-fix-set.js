@@ -17,6 +17,12 @@ const testCases = {
     found:       { a: 'a', abc: 'abc' },
     notFound:    [],
   },
+  emptyInclude: {
+    description: 'Empty include, exclude',
+    config:      { include: {}, exclude: {} },
+    found:       { a: 'a', abc: 'abc' },
+    notFound:    [],
+  },
   includeOnly: {
     description: 'Include only',
     config:      { include: { prefixes: 'a', exceptPrefixes: 'aa', replacePrefix: true, replaceSuffix: true } },
