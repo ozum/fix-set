@@ -8,9 +8,7 @@
     "index.js"
   ],
   "scripts": {
-    "test": "nyc mocha",
-    "xxtest": "nyc --all --exclude lib/type-definitions.js --check-coverage --lines 100 --branches 100 --functions 100 --statements 100 --reporter html mocha",
-    "xtest": "lab --coverage --lint",
+    "test": "nyc mocha && eslint . --ignore-path .gitignore",
     "doc": "jsdoc2md *.js lib/*.js | replace-between --target README.md --token API"
   },
   "repository": "ozum/fix-set",

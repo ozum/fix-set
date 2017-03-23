@@ -118,20 +118,3 @@ describe('escapeRegExp', () => {
     done();
   });
 });
-
-describe('deneme', () => {
-  it('should return true', (done) => {
-    expect(util.deneme('a')).to.true();
-    done();
-  });
-
-  it('should return false', (done) => {
-    expect(util.deneme()).to.false();
-    done();
-  });
-
-  it('should return false for undefined', (done) => {
-    expect(util.deneme()).to.false();
-    done();
-  });
-});

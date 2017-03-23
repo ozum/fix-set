@@ -1,6 +1,7 @@
 {
   "parser":  "babel-eslint",
   "extends": ["airbnb"],
+  "ignore-path": ".gitignore",
   "env": {
     "es6":   true,
     "node":  true,
