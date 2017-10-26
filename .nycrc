@@ -7,12 +7,18 @@
   "cache":          true,
   "check-coverage": true,
   "exclude": [
-    "lib/type-definitions.js",
+    "lib",
     "coverage",
     "test"
   ],
   "reporter": [
     "text",
     "html"
-  ]
+  ],
+  "require": [
+    "babel-register"
+  ],
+  "sourceMap": false,
+  "instrument": false
 }
+

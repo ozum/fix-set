@@ -1,8 +1,7 @@
-const Code = require('code');
+import Code from 'code';
+import FixRule from '../src/index';
 
-const expect   = Code.expect;
-
-const FixRule = require('../index');
+const { expect }  = Code;
 
 const testCases = {
   none: {
@@ -19,23 +18,37 @@ const testCases = {
   },
   includeOnly: {
     description: 'Include only',
-    config:      { include: { prefixes: 'a', exceptPrefixes: 'aa', replacePrefix: true, replaceSuffix: true } },
-    found:       { a: '', abc: 'bc' },
-    notFound:    ['ba', ' a', 'A', 'aabc'],
+    config:      {
+      include: {
+        prefixes:       'a', exceptPrefixes: 'aa', replacePrefix:  true, replaceSuffix:  true,
+      },
+    },
+    found:    { a: '', abc: 'bc' },
+    notFound: ['ba', ' a', 'A', 'aabc'],
   },
 
   excludeOnly: {
     description: 'Exclude only',
-    config:      { exclude: { prefixes: 'a', exceptPrefixes: 'aa', replacePrefix: true, replaceSuffix: true } },
-    found:       { ba: 'ba', ' a': ' a', A: 'A', aabc: 'bc' },
-    notFound:    ['a', 'abc'],
+    config:      {
+      exclude: {
+        prefixes:       'a', exceptPrefixes: 'aa', replacePrefix:  true, replaceSuffix:  true,
+      },
+    },
+    found: {
+      ba:   'ba', ' a': ' a', A:    'A', aabc: 'bc',
+    },
+    notFound: ['a', 'abc'],
   },
 
   includeExclude: {
     description: 'Include and exclude combined',
     config:      {
-      include: { prefixes: 'a', exceptPrefixes: 'aaaa', replacePrefix: true, replaceSuffix: true },
-      exclude: { prefixes: 'aa', exceptPrefixes: 'aaa', replacePrefix: true, replaceSuffix: true },
+      include: {
+        prefixes:       'a', exceptPrefixes: 'aaaa', replacePrefix:  true, replaceSuffix:  true,
+      },
+      exclude: {
+        prefixes:       'aa', exceptPrefixes: 'aaa', replacePrefix:  true, replaceSuffix:  true,
+      },
     },
     found:    { aAge: 'Age', aaaAge: 'aaAge' }, // include rule is prioritized in naming, exclude rule is prioritized in decision.
     notFound: ['aaAge', 'aaaaAge'],
@@ -70,7 +83,11 @@ Object.keys(testCases).forEach((key) => {
 
 describe('getName method', () => {
   it('should allow optional replacement of prefix and suffix.', (done) => {
-    const rule = new FixRule({ include: { prefixes: 'a', suffixes: 'z', replacePrefix: true, replaceSuffix: true } });
+    const rule = new FixRule({
+      include: {
+        prefixes:      'a', suffixes:      'z', replacePrefix: true, replaceSuffix: true,
+      },
+    });
     const result = rule.getName('abbz', { replacePrefix: false, replaceSuffix: false });
 
     expect(result).to.equal('abbz');

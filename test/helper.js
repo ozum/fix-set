@@ -1,12 +1,9 @@
-const Code    = require('code');
+import Code from 'code';
+import { convertToArray, convertToSet, getNameWithoutFix, escapeRegExp } from '../src/helper';
 
-const expect  = Code.expect;
-
-const util       = require('../lib/util');
+const { expect }  = Code;
 
 describe('convertToSet', () => {
-  const convertToSet   = util.convertToSet;
-
   it('should convert string to Set.', (done) => {
     const result = convertToSet('element');
     expect(result).to.equal(new Set(['element']));
@@ -43,8 +40,6 @@ describe('convertToSet', () => {
 });
 
 describe('convertToArray', () => {
-  const convertToArray = util.convertToArray;
-
   it('should convert string to Array.', (done) => {
     const result = convertToArray('element');
     expect(result).to.equal(['element']);
@@ -79,7 +74,6 @@ describe('convertToArray', () => {
 describe('getNameWithouFix', () => {
   const argsReplace       = [[/^a/], [/z$/], true, true];
   const argsNoReplace     = [[/^a/], [/z$/], false, false];
-  const getNameWithoutFix = util.getNameWithoutFix;
 
   it('Replace included prefix', (done) => {
     expect(getNameWithoutFix('aName', ...argsReplace)).to.equal('Name');
@@ -109,12 +103,12 @@ describe('getNameWithouFix', () => {
 
 describe('escapeRegExp', () => {
   it('should escape regexp', (done) => {
-    expect(util.escapeRegExp('a?')).to.equal('a\\?');
+    expect(escapeRegExp('a?')).to.equal('a\\?');
     done();
   });
 
   it('should return undefined as it is', (done) => {
-    expect(util.escapeRegExp()).to.undefined();
+    expect(escapeRegExp()).to.equal('');
     done();
   });
 });

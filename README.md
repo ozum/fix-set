@@ -9,13 +9,22 @@ Lets you define prefix and suffix rules to test strings against.
 Possible use cases:
 
 * Filter query parameters from a web form.
-* Filter custom HTTP header fields. 
+* Filter custom HTTP header fields.
 
 # Synopsis
+```js
+import FixSet from 'fix-set';
+import type { FixSetRuleConfig } from 'fix-set';  // Flow only
+```
+
+```
+const FixSet = require('fix-set').default;
+```
+--------------
 
 ```js
   // Convert parameter names starting with 'q'
-  // to database field names replacing 'q' prefix. 
+  // to database field names replacing 'q' prefix.
   const fixSet = new FixSet({
     include: {
       prefixes:       'q',
@@ -24,7 +33,7 @@ Possible use cases:
       replaceSuffix:  true
     }
   });
-  
+
   // Usage with Array#filter, Array#map etc.
   const parameters = formParameters.filter(param => fixSet.has(param));
   const dbFields   = formParameters
@@ -33,7 +42,7 @@ Possible use cases:
 ```
 
 ```js
-  // Cover all strings starting with 'q' or 'r'. 
+  // Cover all strings starting with 'q' or 'r'.
   const fixSet = new FixSet({
     include: {
       prefixes:      ['q', 'r'],
@@ -46,7 +55,7 @@ Possible use cases:
 ```
 
 ```js
-  // Cover all strings starting with 'q' but not 'qX' 
+  // Cover all strings starting with 'q' but not 'qX'
   const fixSet = new FixSet({
     include: {
       prefixes:       'q',
@@ -55,7 +64,7 @@ Possible use cases:
       replaceSuffix:  true
     }
   });
-  
+
   const name       = fixSet.getName('qMemberName');   // 'MemberName'
   const has        = fixSet.has('qMemberName');       // true
   const otherField = fixSet.getName('qxOther');       // undefined
@@ -64,7 +73,7 @@ Possible use cases:
 
 ```js
   // Cover all strings excluding which start with 'q'.
-  // However include strings starting 'qX' even they start with 'q'. 
+  // However include strings starting 'qX' even they start with 'q'.
   const fixSet = new FixSet({
     exclude: {
       prefixes:       'q',
@@ -73,7 +82,7 @@ Possible use cases:
       replaceSuffix:  true
     }
   });
-  
+
   const name       = fixSet.getName('qMemberName');   // undefined
   const has        = fixSet.has('qMemberName');       // false
   const otherField = fixSet.getName('qxOther');       // Other
@@ -81,9 +90,6 @@ Possible use cases:
 ```
 
 # API
-
-<!--- API BEGIN --->
-
 ## Classes
 
 <dl>
@@ -96,7 +102,7 @@ can be tested if they are covered by this rule.</p>
 ## Typedefs
 
 <dl>
-<dt><a href="#RuleConfig">RuleConfig</a> : <code>Object</code></dt>
+<dt><a href="#FixSetRuleConfig">FixSetRuleConfig</a> : <code>Object</code></dt>
 <dd><p>Fix rule options to create a fix rule from given options.</p>
 </dd>
 </dl>
@@ -117,13 +123,14 @@ can be tested if they are covered by this rule.
 <a name="new_FixSet_new"></a>
 
 ### new FixSet([include], [exclude])
-Creates FixSet object.
+Creates FixSet object. If no `include` or `exclude` parameters provided or empty configurations are provided, they
+would be skipped.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [include] | <code>[RuleConfig](#RuleConfig)</code> | Inclusion rule configuration. |
-| [exclude] | <code>[RuleConfig](#RuleConfig)</code> | Exclusion rule configuration. |
+| [include] | [<code>FixSetRuleConfig</code>](#FixSetConfig) | Inclusion rule configuration. |
+| [exclude] | [<code>FixSetRuleConfig</code>](#FixSetConfig) | Exclusion rule configuration. |
 
 <a name="FixSet+getName"></a>
 
@@ -131,7 +138,7 @@ Creates FixSet object.
 Returns element name if it is covered by rule. Returns undefined otherwise. Prefix and suffix in element name
 is replaced if requested by rule.
 
-**Kind**: instance method of <code>[FixSet](#FixSet)</code>  
+**Kind**: instance method of [<code>FixSet</code>](#FixSet)  
 **Returns**: <code>string</code> \| <code>undefined</code> - - Element name if it is covered by rule, undefined otherwise. Name getName prefix and suffix replaced if requested by rule.  
 
 | Param | Type | Default | Description |
@@ -146,30 +153,29 @@ is replaced if requested by rule.
 ### fixSet.has(element) ⇒ <code>boolean</code>
 Returns whether element is covered by rules.
 
-**Kind**: instance method of <code>[FixSet](#FixSet)</code>  
+**Kind**: instance method of [<code>FixSet</code>](#FixSet)  
 **Returns**: <code>boolean</code> - - Whether element is covered by rule.  
 
 | Param | Type | Description |
 | --- | --- | --- |
 | element | <code>string</code> | Element name to test. |
 
-<a name="RuleConfig"></a>
+<a name="FixSetRuleConfig"></a>
 
-## RuleConfig : <code>Object</code>
+## FixSetRuleConfig : <code>Object</code>
 Fix rule options to create a fix rule from given options.
 
 **Kind**: global typedef  
 **Properties**
 
-| Name | Type | Default | Description |
-| --- | --- | --- | --- |
-| elements | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> |  | Strings which are covered by rule. They are compared by equal operator. |
-| except | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> |  | Fields which are not covered by rule. |
-| prefixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> |  | Strings which starts with given prefixes are covered by rule. |
-| suffixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> |  | Strings which ends with given suffixes are covered by rule. |
-| exceptPrefixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> |  | Strings which starts with given prefixes are NOT covered by rule. |
-| exceptSuffixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> |  | Strings which ends with given suffixes are NOT covered by rule. |
-| stripPrefix | <code>boolean</code> | <code>true</code> | Whether it should prefix be stripped from start of field name |
-| stripSuffix | <code>boolean</code> | <code>true</code> | Whether it should suffix be stripped from end of field name. |
+| Name | Type | Description |
+| --- | --- | --- |
+| elements | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which are covered by rule. They are compared by equal operator. |
+| except | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Fields which are not covered by rule. |
+| prefixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which starts with given prefixes are covered by rule. |
+| suffixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which ends with given suffixes are covered by rule. |
+| exceptPrefixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which starts with given prefixes are NOT covered by rule. |
+| exceptSuffixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which ends with given suffixes are NOT covered by rule. |
+| replacePrefix | <code>boolean</code> | Whether it should prefix be stripped from start of field name |
+| replaceSuffix | <code>boolean</code> | Whether it should suffix be stripped from end of field name. |
 
-<!--- API END --->

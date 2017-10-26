@@ -1,0 +1,20 @@
+{
+  "presets": [
+    "flow",
+    ["env",
+      {
+        "targets": { "node": "current" },
+        "useBuiltIns": true
+      }
+    ]
+  ],
+  "env": {
+    "test": {
+      "plugins": [
+        ["istanbul", {
+          "useInlineSourceMaps": false
+        }]
+      ]
+    }
+  },
+}

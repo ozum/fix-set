@@ -1,3 +1,5 @@
+// @flow
+
 /**
  * Creates a new Set object from given input. If given value is a scalar, converts it to an array and then creates Set.
  * If input is undefined, returns empty Set.
@@ -6,7 +8,7 @@
  * @returns {Set}                                                     - Created Set or undefined.
  * @throws  {Error}                                                   - Throws error if input type cannot be converted to Set.
  */
-function convertToSet(input) {
+function convertToSet<T: string|number>(input?: Array<T>|Set<T>|T): Set<T> {
   if (input === undefined) {
     return new Set();
   } else if (input instanceof Set || Array.isArray(input)) {
@@ -26,7 +28,7 @@ function convertToSet(input) {
  * @returns {Array}                                                 - Created Set or undefined.
  * @throws  {Error}                                                 - Throws error if input type cannot be converted to Array.
  */
-function convertToArray(input) {
+function convertToArray<T: string|number>(input?: Array<T>|Set<T>|T): Array<T> {
   if (input === undefined) {
     return [];
   } else if (Array.isArray(input)) {
@@ -51,7 +53,7 @@ function convertToArray(input) {
  * @param   {boolean}           replaceSuffix   - Whether to replace suffix in name.
  * @returns {string|undefined}                  - Name of the lement if it getName any of the fixes after replacement rules applied.
  */
-function getNameWithoutFix(element, prefixes, suffixes, replacePrefix, replaceSuffix) {
+function getNameWithoutFix(element: string, prefixes: Array<RegExp>, suffixes: Array<RegExp>, replacePrefix: boolean, replaceSuffix: boolean): string | void { // eslint-disable-line max-len
   let name = element;
   const prefix = prefixes.find(f => element.match(f));
   const suffix = suffixes.find(f => element.match(f));
@@ -78,15 +80,10 @@ const reHasRegExpChar = new RegExp(reRegExpChar.source);
  * @returns {string}                            - Returns the escaped string.
  * @see https://github.com/lodash/lodash/blob/master/escapeRegExp.js
  */
-function escapeRegExp(string) {
+function escapeRegExp(string?: string = ''): string {
   return (string && reHasRegExpChar.test(string))
     ? string.replace(reRegExpChar, '\\$&')
     : string;
 }
 
-module.exports = {
-  convertToArray,
-  convertToSet,
-  getNameWithoutFix,
-  escapeRegExp,
-};
+export { convertToArray, convertToSet, getNameWithoutFix, escapeRegExp };

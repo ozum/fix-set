@@ -13,5 +13,7 @@
     <orderEntry type="library" name="joi-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="lab-DefinitelyTyped" level="application" />
     <orderEntry type="library" name="lodash-DefinitelyTyped" level="application" />
+    <orderEntry type="library" name="@types/code" level="application" />
+    <orderEntry type="library" name="@types/mocha" level="application" />
   </component>
 </module>

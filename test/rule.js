@@ -1,8 +1,7 @@
-const Code = require('code');
+import Code from 'code';
+import Rule from '../src/rule';
 
-const expect   = Code.expect;
-
-const Rule = require('../lib/rule');
+const { expect }  = Code;
 
 const testCases = {
   prefixes: {
@@ -21,37 +20,49 @@ const testCases = {
 
   prefixSuffixes: {
     description: 'Prefix and suffixes combined',
-    config:      { prefixes: ['a', 'x', 'zul'], suffixes: ['=', '?'], replacePrefix: true, replaceSuffix: true },
-    found:       { 'A=': 'A', 'bdf=': 'bdf', 'a=': '', xs: 's', 'xjd=': 'jd', 'ss?': 'ss', 'xd?': 'd', 'x?': '', zulb: 'b' },
-    notFound:    { 'df=w': 'df=w', Adh: 'Adh' },
+    config:      {
+      prefixes:      ['a', 'x', 'zul'], suffixes:      ['=', '?'], replacePrefix: true, replaceSuffix: true,
+    },
+    found: {
+      'A=':   'A', 'bdf=': 'bdf', 'a=':   '', xs:     's', 'xjd=': 'jd', 'ss?':  'ss', 'xd?':  'd', 'x?':   '', zulb:   'b',
+    },
+    notFound: { 'df=w': 'df=w', Adh: 'Adh' },
   },
 
   exceptPrefixElements: {
     description: 'Elements and except prefixes combined',
-    config:      { elements: ['abc', 'def'], exceptPrefixes: 'a', replacePrefix: true, replaceSuffix: true },
-    found:       { abc: 'abc', def: 'def' },
-    notFound:    { ab: 'b' },
+    config:      {
+      elements:       ['abc', 'def'], exceptPrefixes: 'a', replacePrefix:  true, replaceSuffix:  true,
+    },
+    found:    { abc: 'abc', def: 'def' },
+    notFound: { ab: 'b' },
   },
 
   prefixAndexceptSuffixes: {
     description: 'Prefix and except suffixes combined',
-    config:      { prefixes: 'a', exceptSuffixes: '!', replacePrefix: true, replaceSuffix: true },
-    found:       { a: '', ab: 'b' },
-    notFound:    { 'a!': 'a', 'bf!': 'bf', jj: 'jj' },
+    config:      {
+      prefixes:       'a', exceptSuffixes: '!', replacePrefix:  true, replaceSuffix:  true,
+    },
+    found:    { a: '', ab: 'b' },
+    notFound: { 'a!': 'a', 'bf!': 'bf', jj: 'jj' },
   },
 
   exceptAndSuffixes: {
     description: 'Except and suffixes combined',
-    config:      { prefixes: 'a', except: 'abc', replacePrefix: true, replaceSuffix: true },
-    found:       { a: '', ab: 'b' },
-    notFound:    { abc: 'abc', sd: 'sd' },
+    config:      {
+      prefixes:      'a', except:        'abc', replacePrefix: true, replaceSuffix: true,
+    },
+    found:    { a: '', ab: 'b' },
+    notFound: { abc: 'abc', sd: 'sd' },
   },
 
   prefixSuffixesNoReplace: {
     description: 'Prefix and suffixes combined without replace',
     config:      { prefixes: ['a', 'x', 'zul'], suffixes: ['=', '?'] },
-    found:       { 'A=': 'A=', 'bdf=': 'bdf=', 'a=': 'a=', xs: 'xs', 'xjd=': 'xjd=', 'ss?': 'ss?', 'xd?': 'xd?', 'x?': 'x?', zulb: 'zulb' },
-    notFound:    { 'df=w': 'df=w', Adh: 'Adh' },
+    found:       {
+      'A=':   'A=', 'bdf=': 'bdf=', 'a=':   'a=', xs:     'xs', 'xjd=': 'xjd=', 'ss?':  'ss?', 'xd?':  'xd?', 'x?':   'x?', zulb:   'zulb',
+    },
+    notFound: { 'df=w': 'df=w', Adh: 'Adh' },
   },
 };
 
@@ -82,7 +93,9 @@ Object.keys(testCases).forEach((key) => {
 
 describe('has method', () => {
   it('should allow optional replacement of prefix and suffix.', (done) => {
-    const rule = new Rule({ prefixes: 'a', suffixes: 'z', replacePrefix: true, replaceSuffix: true });
+    const rule = new Rule({
+      prefixes:      'a', suffixes:      'z', replacePrefix: true, replaceSuffix: true,
+    });
     const result = rule.has('abbz', { replacePrefix: false, replaceSuffix: false });
 
     expect(result).to.equal({ found: true, name: 'abbz' });

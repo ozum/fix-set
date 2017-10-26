@@ -2,14 +2,25 @@
   "name": "fix-set",
   "version": "0.0.10",
   "description": "Lets you define prefix and suffix rules to test strings against.",
-  "main": "index.js",
+  "main": "lib",
   "files": [
-    "lib/",
+    "lib",
+    "bin",
     "index.js"
   ],
   "scripts": {
-    "test": "nyc mocha --async-only --check-leaks && eslint . --ignore-path .gitignore",
-    "doc": "jsdoc2md *.js lib/*.js | replace-between --target README.md --token API"
+    "watch:babel": "babel src/ -d lib/ --source-maps -watch",
+    "//": "Because flow gen-flow-files has bugs such as 'export default class xxx {}', I use flow-copy-source instead of flow gen-flow-files src --out-dir lib",
+    "build": "rm -rf lib && babel src/ -d lib/ --source-maps && flow-copy-source src lib && npm run doc",
+    "flow": "flow",
+    "flowtyped": "flow-typed install",
+    "lint": "eslint src test --fix --ignore-path .gitignore",
+    "pretest": "flow && npm run lint",
+    "test": "cross-env NODE_ENV=test mocha --async-only --check-leaks --require babel-register",
+    "test:cover": "npm run pretest && cross-env NODE_ENV=test nyc mocha --async-only --check-leaks --require babel-register",
+    "map": "node -r source-map-support/register",
+    "doc": "jsdoc2md src/*.js --configure jsdoc.json --template README.hbs > README.md",
+    "preversion": "npm run test:cover && npm run build && git add README.md"
   },
   "repository": "ozum/fix-set",
   "keywords": [
@@ -23,19 +34,28 @@
   },
   "homepage": "https://github.com/ozum/fix-set#readme",
   "devDependencies": {
-    "babel-eslint": "^7.x",
-    "code": "^4.x",
-    "eslint": "^3.x",
-    "eslint-config-airbnb": "^14.x",
+    "babel-cli": "^6.x",
+    "babel-eslint": "^8.x",
+    "babel-plugin-istanbul": "^4.x",
+    "babel-preset-env": "^1.x",
+    "babel-preset-flow": "^6.x",
+    "babel-register": "^6.x",
+    "code": "^5.x",
+    "cross-env": "^5.x",
+    "eslint": "^4.x",
+    "eslint-config-airbnb": "^16.x",
     "eslint-plugin-import": "^2.x",
-    "eslint-plugin-jsx-a11y": "^4.x",
-    "eslint-plugin-react": "^6.x",
+    "eslint-plugin-jsx-a11y": "^6.x",
+    "eslint-plugin-react": "^7.x",
+    "flow-bin": "^0.x",
+    "flow-copy-source": "^1.x",
+    "jsdoc-babel": "^0.x",
     "jsdoc-to-markdown": "^3.x",
-    "mocha": "^3.x",
-    "nyc": "^10.x",
-    "replace-between": "^0.x"
+    "mocha": "^4.x",
+    "nyc": "^11.x",
+    "source-map-support": "^0.x"
   },
-  "peerDependencies": {
-    "joi": "^10.x"
+  "dependencies": {
+    "internal-data": "0.0.7"
   }
 }
