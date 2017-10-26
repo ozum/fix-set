@@ -1,3 +1,5 @@
+<!-- DO NOT EDIT README.md (It will be overridden by README.hbs) -->
+
 # fix-set
 
 Lets you define prefix and suffix rules to test strings against.
@@ -129,8 +131,8 @@ would be skipped.
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [include] | [<code>FixSetRuleConfig</code>](#FixSetConfig) | Inclusion rule configuration. |
-| [exclude] | [<code>FixSetRuleConfig</code>](#FixSetConfig) | Exclusion rule configuration. |
+| [include] | [<code>FixSetRuleConfig</code>](#FixSetRuleConfig) | Inclusion rule configuration. |
+| [exclude] | [<code>FixSetRuleConfig</code>](#FixSetRuleConfig) | Exclusion rule configuration. |
 
 <a name="FixSet+getName"></a>
 
