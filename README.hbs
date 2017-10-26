@@ -19,7 +19,7 @@ import FixSet from 'fix-set';
 import type { FixSetRuleConfig } from 'fix-set';  // Flow only
 ```
 
-```
+```js
 const FixSet = require('fix-set').default;
 ```
 --------------
