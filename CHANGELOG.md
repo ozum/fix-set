@@ -4,14 +4,14 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-### 0.1.0 - 2017-10-26
-
-#### Added
-
-* Flow
-
 ### 0.1.1 - 2017-10-27
 
 #### Changed
 
 * `add-module-exports` babel plugin is added. `require('fix-set')` is working now.
+
+### 0.1.0 - 2017-10-26
+
+#### Added
+
+* Flow
