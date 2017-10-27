@@ -34,8 +34,8 @@ type FixSetRuleConfig = {|
  * @property {FixSetRuleConfig}   exclude         - Configuration rules for excluded fields.
  */
 type FixSetConfig = {|
-  include: FixSetRuleConfig,
-  exclude: FixSetRuleConfig,
+  include?: FixSetRuleConfig,
+  exclude?: FixSetRuleConfig,
 |};
 
 /**
@@ -61,7 +61,7 @@ class FixSet {
    * @param {FixSetRuleConfig} [include]  - Inclusion rule configuration.
    * @param {FixSetRuleConfig} [exclude]  - Exclusion rule configuration.
    */
-  constructor({ include, exclude }: FixSetConfig) {
+  constructor({ include, exclude }: FixSetConfig = {}) {
     const internal   = getInternal(this);
     internal.include = (include && Object.keys(include).length > 0) ? new Rule(include) : undefined;
     internal.exclude = (exclude && Object.keys(exclude).length > 0) ? new Rule(exclude) : undefined;

@@ -4,8 +4,13 @@ import FixRule from '../src/index';
 const { expect }  = Code;
 
 const testCases = {
-  none: {
+  noRule: {
     description: 'No rule',
+    found:       { a: 'a', abc: 'abc' },
+    notFound:    [],
+  },
+  emptyRule: {
+    description: 'Empty rule',
     config:      {},
     found:       { a: 'a', abc: 'abc' },
     notFound:    [],
