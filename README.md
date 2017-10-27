@@ -16,7 +16,7 @@ Possible use cases:
 # Synopsis
 ```js
 import FixSet from 'fix-set';
-import type { FixSetConfig } from 'fix-set';  // Flow only
+import type { FixSetConfig, FixSetRuleConfig } from 'fix-set';  // Flow only
 ```
 
 --------------
