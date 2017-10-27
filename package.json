@@ -36,6 +36,7 @@
   "devDependencies": {
     "babel-cli": "^6.x",
     "babel-eslint": "^8.x",
+    "babel-plugin-add-module-exports": "^0.2.1",
     "babel-plugin-istanbul": "^4.x",
     "babel-preset-env": "^1.x",
     "babel-preset-flow": "^6.x",
