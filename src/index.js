@@ -28,6 +28,17 @@ type FixSetRuleConfig = {|
 |};
 
 /**
+ * Fix rule configuration.
+ * @typedef {Object}              FixSetConfig
+ * @property {FixSetRuleConfig}   include         - Configuration rules for included fields.
+ * @property {FixSetRuleConfig}   exclude         - Configuration rules for excluded fields.
+ */
+type FixSetConfig = {|
+  include: FixSetRuleConfig,
+  exclude: FixSetRuleConfig,
+|};
+
+/**
  * Private attributes of object.
  * @private
  * @typedef  {Object} FixSet~Internal
@@ -38,11 +49,6 @@ type Internal = {|
   include?: Rule,
   exclude?: Rule,
 |}
-
-type Constructor = {|
-  include: FixSetRuleConfig,
-  exclude: FixSetRuleConfig,
-|};
 
 /**
  * Class representing a filter rule. A rule consists of prefixes, elements and disallowed elements etc. Later individual elements
@@ -55,7 +61,7 @@ class FixSet {
    * @param {FixSetRuleConfig} [include]  - Inclusion rule configuration.
    * @param {FixSetRuleConfig} [exclude]  - Exclusion rule configuration.
    */
-  constructor({ include, exclude }: Constructor) {
+  constructor({ include, exclude }: FixSetConfig) {
     const internal   = getInternal(this);
     internal.include = (include && Object.keys(include).length > 0) ? new Rule(include) : undefined;
     internal.exclude = (exclude && Object.keys(exclude).length > 0) ? new Rule(exclude) : undefined;
@@ -96,6 +102,6 @@ class FixSet {
   }
 }
 
-export type { FixSetRuleConfig };
+export type { FixSetRuleConfig, FixSetConfig };
 
 export default FixSet;

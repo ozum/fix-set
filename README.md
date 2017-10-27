@@ -16,7 +16,7 @@ Possible use cases:
 # Synopsis
 ```js
 import FixSet from 'fix-set';
-import type { FixSetRuleConfig } from 'fix-set';  // Flow only
+import type { FixSetConfig } from 'fix-set';  // Flow only
 ```
 
 --------------
@@ -104,6 +104,9 @@ can be tested if they are covered by this rule.</p>
 <dt><a href="#FixSetRuleConfig">FixSetRuleConfig</a> : <code>Object</code></dt>
 <dd><p>Fix rule options to create a fix rule from given options.</p>
 </dd>
+<dt><a href="#FixSetConfig">FixSetConfig</a> : <code>Object</code></dt>
+<dd><p>Fix rule configuration.</p>
+</dd>
 </dl>
 
 <a name="FixSet"></a>
@@ -177,4 +180,17 @@ Fix rule options to create a fix rule from given options.
 | exceptSuffixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which ends with given suffixes are NOT covered by rule. |
 | replacePrefix | <code>boolean</code> | Whether it should prefix be stripped from start of field name |
 | replaceSuffix | <code>boolean</code> | Whether it should suffix be stripped from end of field name. |
+
+<a name="FixSetConfig"></a>
+
+## FixSetConfig : <code>Object</code>
+Fix rule configuration.
+
+**Kind**: global typedef  
+**Properties**
+
+| Name | Type | Description |
+| --- | --- | --- |
+| include | [<code>FixSetRuleConfig</code>](#FixSetRuleConfig) | Configuration rules for included fields. |
+| exclude | [<code>FixSetRuleConfig</code>](#FixSetRuleConfig) | Configuration rules for excluded fields. |
 

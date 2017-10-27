@@ -4,6 +4,12 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.1.4 - 2017-10-27
+
+#### Added
+
+* `FixSet#FixSetConfig` type export. 
+
 ### 0.1.1 - 2017-10-27
 
 #### Changed
