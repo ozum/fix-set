@@ -41,10 +41,10 @@ import type { FixSetConfig, FixSetRuleConfig } from 'fix-set';  // Flow only
 ```
 
 ```js
-  // Cover all strings starting with 'q' or 'r'.
+  // Cover all strings starting with 'q' or /^=(.+?)=/.
   const fixSet = new FixSet({
     include: {
-      prefixes:      ['q', 'r'],
+      prefixes:      ['q', /^=(.+?)=/],
       replacePrefix: true,
       replaceSuffix: true
     }
@@ -102,7 +102,8 @@ can be tested if they are covered by this rule.</p>
 
 <dl>
 <dt><a href="#FixSetRuleConfig">FixSetRuleConfig</a> : <code>Object</code></dt>
-<dd><p>Fix rule options to create a fix rule from given options.</p>
+<dd><p>Fix rule options to create a fix rule from given options. Prefix and suffix parameters can be either string
+or regular expression. If they are provided as regular expressions, they must begin with <code>^</code> or end with <code>$</code>.</p>
 </dd>
 <dt><a href="#FixSetConfig">FixSetConfig</a> : <code>Object</code></dt>
 <dd><p>Fix rule configuration.</p>
@@ -165,19 +166,20 @@ Returns whether element is covered by rules.
 <a name="FixSetRuleConfig"></a>
 
 ## FixSetRuleConfig : <code>Object</code>
-Fix rule options to create a fix rule from given options.
+Fix rule options to create a fix rule from given options. Prefix and suffix parameters can be either string
+or regular expression. If they are provided as regular expressions, they must begin with `^` or end with `$`.
 
 **Kind**: global typedef  
 **Properties**
 
 | Name | Type | Description |
 | --- | --- | --- |
-| elements | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which are covered by rule. They are compared by equal operator. |
+| element | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which are covered by rule. They are compared by equal operator. |
 | except | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Fields which are not covered by rule. |
-| prefixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which starts with given prefixes are covered by rule. |
-| suffixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which ends with given suffixes are covered by rule. |
-| exceptPrefixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which starts with given prefixes are NOT covered by rule. |
-| exceptSuffixes | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | Strings which ends with given suffixes are NOT covered by rule. |
+| prefixes | <code>string</code> \| <code>RegExp</code> \| <code>Array.&lt;(string\|RegExp)&gt;</code> \| <code>Set.&lt;(string\|RegExp)&gt;</code> | Strings which starts with given prefixes are covered by rule. |
+| suffixes | <code>string</code> \| <code>RegExp</code> \| <code>Array.&lt;(string\|RegExp)&gt;</code> \| <code>Set.&lt;(string\|RegExp)&gt;</code> | Strings which ends with given suffixes are covered by rule. |
+| exceptPrefixes | <code>string</code> \| <code>RegExp</code> \| <code>Array.&lt;(string\|RegExp)&gt;</code> \| <code>Set.&lt;(string\|RegExp)&gt;</code> | Strings which starts with given prefixes are NOT covered by rule. |
+| exceptSuffixes | <code>string</code> \| <code>RegExp</code> \| <code>Array.&lt;(string\|RegExp)&gt;</code> \| <code>Set.&lt;(string\|RegExp)&gt;</code> | Strings which ends with given suffixes are NOT covered by rule. |
 | replacePrefix | <code>boolean</code> | Whether it should prefix be stripped from start of field name |
 | replaceSuffix | <code>boolean</code> | Whether it should suffix be stripped from end of field name. |
 

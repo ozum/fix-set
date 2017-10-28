@@ -41,10 +41,10 @@ import type { FixSetConfig, FixSetRuleConfig } from 'fix-set';  // Flow only
 ```
 
 ```js
-  // Cover all strings starting with 'q' or 'r'.
+  // Cover all strings starting with 'q' or /^=(.+?)=/.
   const fixSet = new FixSet({
     include: {
-      prefixes:      ['q', 'r'],
+      prefixes:      ['q', /^=(.+?)=/],
       replacePrefix: true,
       replaceSuffix: true
     }

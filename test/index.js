@@ -21,6 +21,7 @@ const testCases = {
     found:       { a: 'a', abc: 'abc' },
     notFound:    [],
   },
+
   includeOnly: {
     description: 'Include only',
     config:      {
@@ -57,6 +58,20 @@ const testCases = {
     },
     found:    { aAge: 'Age', aaaAge: 'aaAge' }, // include rule is prioritized in naming, exclude rule is prioritized in decision.
     notFound: ['aaAge', 'aaaaAge'],
+  },
+
+  includeExcludeRegExp: {
+    description: 'Include and exclude combined with regular expression.',
+    config:      {
+      include: {
+        suffixes:       /=(.+?)=$/, exceptSuffixes: '=forbidden=', replacePrefix:  true, replaceSuffix:  true,
+      },
+      exclude: {
+        suffixes:       new RegExp('==(.+?)=$'), exceptSuffixes: '==include=', replacePrefix:  true, replaceSuffix:  true,
+      },
+    },
+    found:    { 'name=eq=': 'name', 'name==include=': 'name' }, // include rule is prioritized in naming, exclude rule is prioritized in decision.
+    notFound: ['name==other=', 'name=forbidden='],
   },
 };
 

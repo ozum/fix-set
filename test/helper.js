@@ -1,5 +1,5 @@
 import Code from 'code';
-import { convertToArray, convertToSet, getNameWithoutFix, escapeRegExp } from '../src/helper';
+import { convertToArray, convertToSet, getNameWithoutFix, escapeRegExp, getRegExp } from '../src/helper';
 
 const { expect }  = Code;
 
@@ -108,7 +108,45 @@ describe('escapeRegExp', () => {
   });
 
   it('should return undefined as it is', (done) => {
-    expect(escapeRegExp()).to.equal('');
+    expect(escapeRegExp()).to.equal(undefined);
+    done();
+  });
+});
+
+describe('getRegExp', () => {
+  it('should return prefixed regular expression', (done) => {
+    expect(getRegExp('a', 'prefix').source).to.equal('^a');
+    done();
+  });
+
+  it('should return suffixed regular expression', (done) => {
+    expect(getRegExp('a', 'suffix').source).to.equal('a$');
+    done();
+  });
+
+  it('should return prefix regular expression input as is.', (done) => {
+    expect(getRegExp(new RegExp('^abc'), 'prefix').source).to.equal('^abc');
+    done();
+  });
+
+  it('should return suffix regular expression input as is.', (done) => {
+    expect(getRegExp(new RegExp('abc$'), 'suffix').source).to.equal('abc$');
+    done();
+  });
+
+  it('should return empty regular expression if input is undefined.', (done) => {
+    expect(getRegExp(undefined, 'suffix').source).to.equal('(?:)');   // new RegExp('').source is equal to '(?:)'.
+    done();
+  });
+
+
+  it('should throw if prefix regular expression does not begin with "^".', (done) => {
+    expect(() => getRegExp(new RegExp('abc'), 'prefix')).to.throw('Prefix regular expression must begin with "^"');
+    done();
+  });
+
+  it('should throw if suffix regular expression does not end with "$".', (done) => {
+    expect(() => getRegExp(new RegExp('abc'), 'suffix')).to.throw('Suffix regular expression must end with "$"');
     done();
   });
 });

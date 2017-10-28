@@ -5,24 +5,25 @@ import Rule from './rule';
 const getInternal: (FixSet) => Internal = require('internal-data')(); // eslint-disable-line no-use-before-define
 
 /**
- * Fix rule options to create a fix rule from given options.
- * @typedef  {Object}                             FixSetRuleConfig
- * @property {string|Array.<string>|Set.<string>} [elements]            - Strings which are covered by rule. They are compared by equal operator.
- * @property {string|Array.<string>|Set.<string>} [except]              - Fields which are not covered by rule.
- * @property {string|Array.<string>|Set.<string>} [prefixes]            - Strings which starts with given prefixes are covered by rule.
- * @property {string|Array.<string>|Set.<string>} [suffixes]            - Strings which ends with given suffixes are covered by rule.
- * @property {string|Array.<string>|Set.<string>} [exceptPrefixes]      - Strings which starts with given prefixes are NOT covered by rule.
- * @property {string|Array.<string>|Set.<string>} [exceptSuffixes]      - Strings which ends with given suffixes are NOT covered by rule.
- * @property {boolean}                            [replacePrefix]       - Whether it should prefix be stripped from start of field name
- * @property {boolean}                            [replaceSuffix]       - Whether it should suffix be stripped from end of field name.
+ * Fix rule options to create a fix rule from given options. Prefix and suffix parameters can be either string
+ * or regular expression. If they are provided as regular expressions, they must begin with `^` or end with `$`.
+ * @typedef  {Object} FixSetRuleConfig
+ * @property {string|Array.<string>|Set.<string>}                      [element]             - Strings which are covered by rule. They are compared by equal operator.
+ * @property {string|Array.<string>|Set.<string>}                      [except]              - Fields which are not covered by rule.
+ * @property {string|RegExp|Array.<string|RegExp>|Set.<string|RegExp>} [prefixes]            - Strings which starts with given prefixes are covered by rule.
+ * @property {string|RegExp|Array.<string|RegExp>|Set.<string|RegExp>} [suffixes]            - Strings which ends with given suffixes are covered by rule.
+ * @property {string|RegExp|Array.<string|RegExp>|Set.<string|RegExp>} [exceptPrefixes]      - Strings which starts with given prefixes are NOT covered by rule.
+ * @property {string|RegExp|Array.<string|RegExp>|Set.<string|RegExp>} [exceptSuffixes]      - Strings which ends with given suffixes are NOT covered by rule.
+ * @property {boolean}                                                 [replacePrefix]       - Whether it should prefix be stripped from start of field name
+ * @property {boolean}                                                 [replaceSuffix]       - Whether it should suffix be stripped from end of field name.
  */
 type FixSetRuleConfig = {|
   elements?:       string | Array<string> | Set<string>,
   except?:         string | Array<string> | Set<string>,
-  prefixes?:       string | Array<string> | Set<string>,
-  suffixes?:       string | Array<string> | Set<string>,
-  exceptPrefixes?: string | Array<string> | Set<string>,
-  exceptSuffixes?: string | Array<string> | Set<string>,
+  prefixes?:       Array<string|RegExp> | Set<string|RegExp> | string | RegExp,
+  suffixes?:       Array<string|RegExp> | Set<string|RegExp> | string | RegExp,
+  exceptPrefixes?: Array<string|RegExp> | Set<string|RegExp> | string | RegExp,
+  exceptSuffixes?: Array<string|RegExp> | Set<string|RegExp> | string | RegExp,
   replacePrefix?:  boolean,
   replaceSuffix?:  boolean,
 |};

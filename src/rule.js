@@ -1,6 +1,6 @@
 // @flow
 
-import { convertToArray, convertToSet, getNameWithoutFix, escapeRegExp } from './helper';
+import { convertToArray, convertToSet, getNameWithoutFix, getRegExp } from './helper';
 import type { FixSetRuleConfig } from './index';
 
 const getInternal: (Rule) => Internal = require('internal-data')(); // eslint-disable-line no-use-before-define
@@ -49,10 +49,10 @@ class Rule {
 
     internal.elements        = convertToSet(elements);
     internal.except          = convertToSet(except);
-    internal.prefixes        = convertToArray(prefixes).map(s => new RegExp(`^${escapeRegExp(s)}`));
-    internal.suffixes        = convertToArray(suffixes).map(s => new RegExp(`${escapeRegExp(s)}$`));
-    internal.exceptPrefixes  = convertToArray(exceptPrefixes).map(s => new RegExp(`^${escapeRegExp(s)}`));
-    internal.exceptSuffixes  = convertToArray(exceptSuffixes).map(s => new RegExp(`${escapeRegExp(s)}$`));
+    internal.prefixes        = convertToArray(prefixes).map(s => getRegExp(s, 'prefix'));
+    internal.suffixes        = convertToArray(suffixes).map(s => getRegExp(s, 'suffix'));
+    internal.exceptPrefixes  = convertToArray(exceptPrefixes).map(s => getRegExp(s, 'prefix'));
+    internal.exceptSuffixes  = convertToArray(exceptSuffixes).map(s => getRegExp(s, 'suffix'));
     internal.replacePrefix   = replacePrefix || false;
     internal.replaceSuffix   = replaceSuffix || false;
   }
