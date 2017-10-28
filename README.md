@@ -119,21 +119,22 @@ can be tested if they are covered by this rule.
 **Kind**: global class  
 
 * [FixSet](#FixSet)
-    * [new FixSet([include], [exclude])](#new_FixSet_new)
+    * [new FixSet([config])](#new_FixSet_new)
     * [.getName(element, [options])](#FixSet+getName) ⇒ <code>string</code> \| <code>undefined</code>
     * [.has(element)](#FixSet+has) ⇒ <code>boolean</code>
 
 <a name="new_FixSet_new"></a>
 
-### new FixSet([include], [exclude])
+### new FixSet([config])
 Creates FixSet object. If no `include` or `exclude` parameters provided or empty configurations are provided, they
 would be skipped.
 
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [include] | [<code>FixSetRuleConfig</code>](#FixSetRuleConfig) | Inclusion rule configuration. |
-| [exclude] | [<code>FixSetRuleConfig</code>](#FixSetRuleConfig) | Exclusion rule configuration. |
+| [config] | <code>Object</code> | Configuration. |
+| [config.include] | [<code>FixSetRuleConfig</code>](#FixSetRuleConfig) | Inclusion rule configuration. |
+| [config.exclude] | [<code>FixSetRuleConfig</code>](#FixSetRuleConfig) | Exclusion rule configuration. |
 
 <a name="FixSet+getName"></a>
 
