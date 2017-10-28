@@ -21,7 +21,16 @@ const testCases = {
     found:       { a: 'a', abc: 'abc' },
     notFound:    [],
   },
-
+  undefinedInclude: {
+    description: 'Undefined include, exclude',
+    config:      { include: undefined },
+    found:       { a: 'a', abc: 'abc' },
+  },
+  undefinedPrefixes: {
+    description: 'Undefined prefixes',
+    config:      { include: { prefixes: undefined } },
+    found:       { a: 'a', abc: 'abc' },
+  },
   includeOnly: {
     description: 'Include only',
     config:      {
@@ -32,7 +41,26 @@ const testCases = {
     found:    { a: '', abc: 'bc' },
     notFound: ['ba', ' a', 'A', 'aabc'],
   },
-
+  includeAndExceptOnly: {
+    description: 'Include and except only',
+    config:      {
+      include: {
+        exceptPrefixes: 'aa', replacePrefix:  true, replaceSuffix:  true,
+      },
+    },
+    found:    { a: 'a', abc: 'abc' },
+    notFound: ['aabc'],
+  },
+  excludeAndExceptOnly: {
+    description: 'Exclude and except only',
+    config:      {
+      exclude: {
+        exceptPrefixes: 'aa', replacePrefix:  true, replaceSuffix:  true,
+      },
+    },
+    found:    { aabc: 'bc' },
+    notFound: ['abc', 'bc'],
+  },
   excludeOnly: {
     description: 'Exclude only',
     config:      {
@@ -82,22 +110,26 @@ Object.keys(testCases).forEach((key) => {
   describe(testCase.description, () => {
     const rule = new FixSet(testCase.config);
 
-    Object.keys(testCase.found).forEach((field, i) => {
-      const expected = testCase.found[field];
-      it(`should return element name in sample index ${i}.`, (done) => {
-        expect(rule.has(field)).to.be.true();
-        expect(rule.getName(field)).to.equal(expected);
-        done();
+    if (testCase.found) {
+      Object.keys(testCase.found).forEach((field, i) => {
+        const expected = testCase.found[field];
+        it(`should return element name in sample index ${i}.`, (done) => {
+          expect(rule.has(field)).to.be.true();
+          expect(rule.getName(field)).to.equal(expected);
+          done();
+        });
       });
-    });
+    }
 
-    testCase.notFound.forEach((element, i) => {
-      it(`should report non-compliant elements as false in sample index ${i}`, (done) => {
-        expect(rule.has(element)).to.be.false();
-        expect(rule.getName(element)).to.undefined();
-        done();
+    if (testCase.notFound) {
+      testCase.notFound.forEach((element, i) => {
+        it(`should report non-compliant elements as false in sample index ${i}`, (done) => {
+          expect(rule.has(element)).to.be.false();
+          expect(rule.getName(element)).to.undefined();
+          done();
+        });
       });
-    });
+    }
   });
 });
 

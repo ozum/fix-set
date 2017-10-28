@@ -4,12 +4,17 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.2.3 - 2017-10-28
+
+#### Fixed
+
+* Undefined `include.prefixes` and `include.suffixes` was rejecting everything instead of accepting everything.
+
 ### 0.2.0 - 2017-10-28
 
 #### Added
 
-* Regular expression support for prefixes and suffixes. 
-
+* Regular expression support for prefixes and suffixes.
 
 ### 0.1.4 - 2017-10-27
 

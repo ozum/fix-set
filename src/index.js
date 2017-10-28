@@ -8,6 +8,8 @@ const getInternal: (FixSet) => Internal = require('internal-data')(); // eslint-
 /**
  * Fix rule options to create a fix rule from given options. Prefix and suffix parameters can be either string
  * or regular expression. If they are provided as regular expressions, they must begin with `^` or end with `$`.
+ * If no `prefixes` and `suffixes` provided, it is assumed all strings are included except `exceptPrefixes`
+ * and `exceptSuffixes`.
  * @typedef  {Object} FixSetRuleConfig
  * @property {string|Array.<string>|Set.<string>}                      [element]             - Strings which are covered by rule. They are compared by equal operator.
  * @property {string|Array.<string>|Set.<string>}                      [except]              - Fields which are not covered by rule.
@@ -102,8 +104,9 @@ class FixSet {
    */
   getName(element: string, options: { replacePrefix?: boolean, replaceSuffix?: boolean } = {}): string | void {
     const internal      = getInternal(this);
-    const included      = internal.include && internal.include.has(element, options);  // Get name without prefixes and suffixes.
     const excluded      = internal.exclude && internal.exclude.has(element, options);  // Whether it is in exclude list.
+    const included      = internal.include && internal.include.has(element, options);  // Get name without prefixes and suffixes.
+
 
     if ((excluded && excluded.found) || (included && !included.found)) {
       return undefined;

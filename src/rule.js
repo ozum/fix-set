@@ -19,14 +19,14 @@ const getInternal: (Rule) => Internal = require('internal-data')(); // eslint-di
  * @property  {boolean}         [replaceSuffix]     - Whether it should suffix be stripped from end of field name.
  */
 type Internal = {|
-  elements:       Set<string>,
-  except:         Set<string>,
-  prefixes:       Array<RegExp>,
-  suffixes:       Array<RegExp>,
-  exceptPrefixes: Array<RegExp>,
-  exceptSuffixes: Array<RegExp>,
-  replacePrefix:  boolean,
-  replaceSuffix:  boolean,
+  elements?:       Set<string>,
+  except?:         Set<string>,
+  prefixes?:       Array<RegExp>,
+  suffixes?:       Array<RegExp>,
+  exceptPrefixes?: Array<RegExp>,
+  exceptSuffixes?: Array<RegExp>,
+  replacePrefix:   boolean,
+  replaceSuffix:   boolean,
 |};
 
 /**
@@ -47,12 +47,12 @@ class Rule {
 
     const internal = getInternal(this);
 
-    internal.elements        = convertToSet(elements);
-    internal.except          = convertToSet(except);
-    internal.prefixes        = convertToArray(prefixes).map(s => getRegExp(s, 'prefix'));
-    internal.suffixes        = convertToArray(suffixes).map(s => getRegExp(s, 'suffix'));
-    internal.exceptPrefixes  = convertToArray(exceptPrefixes).map(s => getRegExp(s, 'prefix'));
-    internal.exceptSuffixes  = convertToArray(exceptSuffixes).map(s => getRegExp(s, 'suffix'));
+    internal.elements        = elements ? convertToSet(elements) : undefined;
+    internal.except          = except ? convertToSet(except) : undefined;
+    internal.prefixes        = prefixes ? convertToArray(prefixes).map(s => getRegExp(s, 'prefix')) : undefined;
+    internal.suffixes        = suffixes ? convertToArray(suffixes).map(s => getRegExp(s, 'suffix')) : undefined;
+    internal.exceptPrefixes  = exceptPrefixes ? convertToArray(exceptPrefixes).map(s => getRegExp(s, 'prefix')) : undefined;
+    internal.exceptSuffixes  = exceptSuffixes ? convertToArray(exceptSuffixes).map(s => getRegExp(s, 'suffix')) : undefined;
     internal.replacePrefix   = replacePrefix || false;
     internal.replaceSuffix   = replaceSuffix || false;
   }
@@ -70,29 +70,31 @@ class Rule {
     const replacePrefix = options.replacePrefix === undefined ? internal.replacePrefix : options.replacePrefix;
     const replaceSuffix = options.replaceSuffix === undefined ? internal.replaceSuffix : options.replaceSuffix;
 
-    if (internal.except.has(element)) {
+    if (internal.except && internal.except.has(element)) {
       return { found: false, name: element };
     }
 
-    if (internal.elements.has(element)) {
+    if (internal.elements && internal.elements.has(element)) {
       return { found: true, name: element };
     }
 
-    // If it is not included get replaced name.
-    const exceptionName = getNameWithoutFix(element, internal.exceptPrefixes, internal.exceptSuffixes, replacePrefix, replaceSuffix);
+    // If it is not included get prefix and suffix stripped name.
+    if (internal.exceptPrefixes || internal.exceptSuffixes) {
+      const exceptionName = getNameWithoutFix(element, internal.exceptPrefixes, internal.exceptSuffixes, replacePrefix, replaceSuffix);
 
-    if (exceptionName !== undefined) {
-      return { found: false, name: exceptionName };
+      if (exceptionName !== undefined) {
+        return { found: false, name: exceptionName };
+      }
     }
 
-    // If it is included get replaced name.
-    const name = getNameWithoutFix(element, internal.prefixes, internal.suffixes, replacePrefix, replaceSuffix);
+    // If it is included get prefix and suffix stripped name.
+    if (internal.prefixes || internal.suffixes) {
+      const name = getNameWithoutFix(element, internal.prefixes, internal.suffixes, replacePrefix, replaceSuffix);
 
-    if (name !== undefined) {
-      return { found: true, name };
+      return (name === undefined) ? { found: false, name: element } : { found: true, name };
     }
 
-    return { found: false, name: element };
+    return { found: true, name: element };
   }
 }
 

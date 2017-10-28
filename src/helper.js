@@ -43,8 +43,8 @@ function convertToArray<T: string|RegExp>(input?: Array<T>|Set<T>|T): Array<T> {
 }
 
 /**
- * Returns name if it getName any of given prefixes and suffixes. Applies replacement if requested. Returns undefined
- * if element getName none of the prefixes or suffixes.
+ * Returns name if it has any of given prefixes and suffixes. Applies replacement if requested. Returns undefined
+ * if element has none of the prefixes or suffixes.
  * @private
  * @param   {string}            element         - Element to test
  * @param   {Array.<RegExp>}    prefixes        - List of prefix regular expressions.
@@ -53,10 +53,11 @@ function convertToArray<T: string|RegExp>(input?: Array<T>|Set<T>|T): Array<T> {
  * @param   {boolean}           replaceSuffix   - Whether to replace suffix in name.
  * @returns {string|undefined}                  - Name of the lement if it getName any of the fixes after replacement rules applied.
  */
-function getNameWithoutFix(element: string, prefixes: Array<RegExp>, suffixes: Array<RegExp>, replacePrefix: boolean, replaceSuffix: boolean): string | void { // eslint-disable-line max-len
+function getNameWithoutFix(element: string, prefixes?: Array<RegExp>, suffixes?: Array<RegExp>, replacePrefix: boolean, replaceSuffix: boolean): string | void { // eslint-disable-line max-len
   let name = element;
-  const prefix = prefixes.find(f => element.match(f));
-  const suffix = suffixes.find(f => element.match(f));
+
+  const prefix = prefixes && prefixes.find(f => element.match(f));
+  const suffix = suffixes && suffixes.find(f => element.match(f));
 
   if (prefix || suffix) {
     name = replacePrefix && prefix ? name.replace(prefix, '') : name;

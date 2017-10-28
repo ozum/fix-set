@@ -13,6 +13,13 @@ Possible use cases:
 * Filter query parameters from a web form.
 * Filter custom HTTP header fields.
 
+## Rule Priority
+
+* Rules: `exclude` > `include`
+* Inside Rules: `except` > `elements` > `exceptPrefixes` or `exceptSuffixes` > `prefixes` or `suffixes`
+* Prefixes and suffixes has `or` relation. If a string satisfies one of them, rule is satisfied.
+* If no `prefixes` and `suffixes` provided, it is assumed all strings are included in rule except `exceptPrefixes` and `exceptSuffixes`.
+
 # Synopsis
 ```js
 import FixSet from 'fix-set';
@@ -22,18 +29,43 @@ import type { FixSetConfig, FixSetRuleConfig } from 'fix-set';  // Flow only
 --------------
 
 ```js
-  // Convert parameter names starting with 'q'
-  // to database field names replacing 'q' prefix.
-  const fixSet = new FixSet({
-    include: {
-      prefixes:       'q',
-      exceptPrefixes: 'qX',
-      replacePrefix:  true,
-      replaceSuffix:  true
-    }
-  });
+// Whitelist: Include only strings starting with 'q' but not 'qX'.
+const fixSet = new FixSet({
+  include: {
+    prefixes:       'q',
+    exceptPrefixes: 'qX',
+    replacePrefix:  true,
+    replaceSuffix:  true
+  }
+});
 
+const name       = fixSet.getName('qMemberName');   // 'MemberName'
+const has        = fixSet.has('qMemberName');       // true
+const otherField = fixSet.getName('qxOther');       // undefined
+const otherHas   = fixSet.has('qxOther');           // false
+```
+
+```js
+// Blacklist: Include all strings excluding which begins with 'q',
+// but include strings beginning with 'qX' even they also begin with 'q'.
+const fixSet = new FixSet({
+  exclude: {
+    prefixes:       'q',
+    exceptPrefixes: 'qX',
+    replacePrefix:  true,
+    replaceSuffix:  true
+  }
+});
+
+const name       = fixSet.getName('qMemberName');   // undefined
+const has        = fixSet.has('qMemberName');       // false
+const otherField = fixSet.getName('qxOther');       // Other
+const otherHas   = fixSet.has('qxOther');           // true
+```
+
+```js
   // Usage with Array#filter, Array#map etc.
+  // Get included field names.
   const parameters = Object.keys(formParameters).filter(param => fixSet.has(param));
   const dbFields   = Object.keys(formParameters)
     .map(param => fixSet.getName(param))
@@ -41,52 +73,32 @@ import type { FixSetConfig, FixSetRuleConfig } from 'fix-set';  // Flow only
 ```
 
 ```js
-  // Cover all strings starting with 'q' or /^=(.+?)=/.
-  const fixSet = new FixSet({
-    include: {
-      prefixes:      ['q', /^=(.+?)=/],
-      replacePrefix: true,
-      replaceSuffix: true
-    }
-  });
-  const name = fixSet.getName('qMemberName');   // 'MemberName'
-  const has  = fixSet.has('qMemberName');       // true
+// Usage with lodash.
+import lodash from 'lodash';
+const filteredObject = lodash.pickBy(data, (value, key) => fixSet.has(key));
 ```
 
 ```js
-  // Cover all strings starting with 'q' but not 'qX'
-  const fixSet = new FixSet({
-    include: {
-      prefixes:       'q',
-      exceptPrefixes: 'qx',
-      replacePrefix:  true,
-      replaceSuffix:  true
-    }
-  });
-
-  const name       = fixSet.getName('qMemberName');   // 'MemberName'
-  const has        = fixSet.has('qMemberName');       // true
-  const otherField = fixSet.getName('qxOther');       // undefined
-  const otherHas   = fixSet.has('qxOther');           // false
+// Cover only strings starting with 'q' or /^=(.+?)=/.
+const fixSet = new FixSet({
+  include: {
+    prefixes:      ['q', /^=(.+?)=/],
+    replacePrefix: true,
+    replaceSuffix: true
+  }
+});
+const name = fixSet.getName('qMemberName');     // 'MemberName'
+const has  = fixSet.has('qMemberName');         // true
+const has  = fixSet.has('=eq=MemberName');      // true
+const has  = fixSet.getName('=eq=MemberName');  // 'MemberName'
 ```
 
-```js
-  // Cover all strings excluding which start with 'q'.
-  // However include strings starting 'qX' even they start with 'q'.
-  const fixSet = new FixSet({
-    exclude: {
-      prefixes:       'q',
-      exceptPrefixes: 'qX',
-      replacePrefix:  true,
-      replaceSuffix:  true
-    }
-  });
+## Why both `include` and `exclude`?
 
-  const name       = fixSet.getName('qMemberName');   // undefined
-  const has        = fixSet.has('qMemberName');       // false
-  const otherField = fixSet.getName('qxOther');       // Other
-  const otherHas   = fixSet.has('qxOther');           // true
-```
+Consider two scenarios below:
+
+* Include all strings, but not starting with 'q'. However include starting with 'qx': `{ exclude: { prefixes: 'q', exceptPrefixes: 'qx' } }`
+* Exclude all strings, but not starting with 'q'. However exclude starting with 'qx' `{ include: { prefixes: 'q', exceptPrefixes: 'qx' } }`
 
 # API
 ## Classes
@@ -103,7 +115,9 @@ can be tested if they are covered by this rule.</p>
 <dl>
 <dt><a href="#FixSetRuleConfig">FixSetRuleConfig</a> : <code>Object</code></dt>
 <dd><p>Fix rule options to create a fix rule from given options. Prefix and suffix parameters can be either string
-or regular expression. If they are provided as regular expressions, they must begin with <code>^</code> or end with <code>$</code>.</p>
+or regular expression. If they are provided as regular expressions, they must begin with <code>^</code> or end with <code>$</code>.
+If no <code>prefixes</code> and <code>suffixes</code> provided, it is assumed all strings are included except <code>exceptPrefixes</code>
+and <code>exceptSuffixes</code>.</p>
 </dd>
 <dt><a href="#FixSetConfig">FixSetConfig</a> : <code>Object</code></dt>
 <dd><p>Fix rule configuration.</p>
@@ -169,6 +183,8 @@ Returns whether element is covered by rules.
 ## FixSetRuleConfig : <code>Object</code>
 Fix rule options to create a fix rule from given options. Prefix and suffix parameters can be either string
 or regular expression. If they are provided as regular expressions, they must begin with `^` or end with `$`.
+If no `prefixes` and `suffixes` provided, it is assumed all strings are included except `exceptPrefixes`
+and `exceptSuffixes`.
 
 **Kind**: global typedef  
 **Properties**

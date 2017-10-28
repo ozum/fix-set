@@ -92,7 +92,7 @@ Object.keys(testCases).forEach((key) => {
 });
 
 describe('has method', () => {
-  it('should allow optional replacement of prefix and suffix.', (done) => {
+  it('should allow optional replacement of prefix and suffix - 1.', (done) => {
     const rule = new Rule({
       prefixes:      'a', suffixes:      'z', replacePrefix: true, replaceSuffix: true,
     });
@@ -102,11 +102,11 @@ describe('has method', () => {
     done();
   });
 
-  it('should allow optional replacement of prefix and suffix.', (done) => {
+  it('should allow optional replacement of prefix and suffix - 2.', (done) => {
     const rule = new Rule();
     const result = rule.has('abbz');
 
-    expect(result).to.equal({ found: false, name: 'abbz' });
+    expect(result).to.equal({ found: true, name: 'abbz' });
     done();
   });
 });
