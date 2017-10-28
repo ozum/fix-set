@@ -34,8 +34,8 @@ import type { FixSetConfig, FixSetRuleConfig } from 'fix-set';  // Flow only
   });
 
   // Usage with Array#filter, Array#map etc.
-  const parameters = formParameters.filter(param => fixSet.has(param));
-  const dbFields   = formParameters
+  const parameters = Object.keys(formParameters).filter(param => fixSet.has(param));
+  const dbFields   = Object.keys(formParameters)
     .map(param => fixSet.getName(param))
     .filter(field => field !== undefined);
 ```
