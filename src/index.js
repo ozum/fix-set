@@ -1,5 +1,6 @@
 // @flow
 
+import Joi from 'joi';
 import Rule from './rule';
 
 const getInternal: (FixSet) => Internal = require('internal-data')(); // eslint-disable-line no-use-before-define
@@ -27,6 +28,23 @@ type FixSetRuleConfig = {|
   replacePrefix?:  boolean,
   replaceSuffix?:  boolean,
 |};
+
+
+const FixSchema = Joi.alternatives(Joi.array().items(Joi.string(), Joi.object().type(RegExp)), Joi.string(), Joi.object().type(RegExp), Joi.object().type(Set));
+
+const FixSetRuleConfigSchema = Joi.object({
+  elements:       Joi.alternatives(Joi.array().items(Joi.string()), Joi.string(), Joi.object().type(Set)).optional(),
+  except:         Joi.alternatives(Joi.array().items(Joi.string()), Joi.string(), Joi.object().type(Set)).optional(),
+  prefixes:       FixSchema.optional(),
+  suffixes:       FixSchema.optional(),
+  exceptPrefixes: FixSchema.optional(),
+  exceptSuffixes: FixSchema.optional(),
+  replacePrefix:  Joi.boolean().optional(),
+  replaceSuffix:  Joi.boolean().optional(),
+}).unknown(false);
+
+const FixSetConfigSchema = Joi.object({ include: FixSetRuleConfigSchema.optional(), exclude: FixSetRuleConfigSchema.optional() }).unknown(false);
+
 
 /**
  * Fix rule configuration.
@@ -59,11 +77,16 @@ class FixSet {
   /**
    * Creates FixSet object. If no `include` or `exclude` parameters provided or empty configurations are provided, they
    * would be skipped.
-   * @param {FixSetRuleConfig} [include]  - Inclusion rule configuration.
-   * @param {FixSetRuleConfig} [exclude]  - Exclusion rule configuration.
+   * @param {Object}           [config]          - Configuration.
+   * @param {FixSetRuleConfig} [config.include]  - Inclusion rule configuration.
+   * @param {FixSetRuleConfig} [config.exclude]  - Exclusion rule configuration.
    */
-  constructor({ include, exclude }: FixSetConfig = {}) {
+  constructor(config: FixSetConfig) {
+    Joi.assert(config, FixSetConfigSchema);
+
     const internal   = getInternal(this);
+    const { include, exclude } = config || {};
+
     internal.include = (include && Object.keys(include).length > 0) ? new Rule(include) : undefined;
     internal.exclude = (exclude && Object.keys(exclude).length > 0) ? new Rule(exclude) : undefined;
   }

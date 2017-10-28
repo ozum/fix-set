@@ -57,6 +57,7 @@
     "source-map-support": "^0.x"
   },
   "dependencies": {
-    "internal-data": "0.0.7"
+    "internal-data": "0.0.8",
+    "joi": "^13.0.1"
   }
 }

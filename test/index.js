@@ -1,5 +1,5 @@
 import Code from 'code';
-import FixRule from '../src/index';
+import FixSet from '../src/index';
 
 const { expect }  = Code;
 
@@ -80,7 +80,7 @@ Object.keys(testCases).forEach((key) => {
   const testCase = testCases[key];
 
   describe(testCase.description, () => {
-    const rule = new FixRule(testCase.config);
+    const rule = new FixSet(testCase.config);
 
     Object.keys(testCase.found).forEach((field, i) => {
       const expected = testCase.found[field];
@@ -103,7 +103,7 @@ Object.keys(testCases).forEach((key) => {
 
 describe('getName method', () => {
   it('should allow optional replacement of prefix and suffix.', (done) => {
-    const rule = new FixRule({
+    const rule = new FixSet({
       include: {
         prefixes:      'a', suffixes:      'z', replacePrefix: true, replaceSuffix: true,
       },
@@ -111,6 +111,23 @@ describe('getName method', () => {
     const result = rule.getName('abbz', { replacePrefix: false, replaceSuffix: false });
 
     expect(result).to.equal('abbz');
+    done();
+  });
+});
+
+describe('FixSet', () => {
+  it('should throw when Joi assertion fails - 1.', (done) => {
+    expect(() => new FixSet({ include: 3 })).to.throw(/"include" must be an object/);
+    done();
+  });
+
+  it('should throw when Joi assertion fails - 2.', (done) => {
+    expect(() => new FixSet({ xxx: 3 })).to.throw(/"xxx" is not allowed/);
+    done();
+  });
+
+  it('should throw when Joi assertion fails - 2.', (done) => {
+    expect(() => new FixSet({ include: { elements: 3 } })).to.throw(/"elements" must be an array/);
     done();
   });
 });
