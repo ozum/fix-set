@@ -20,7 +20,8 @@
     "test:cover": "npm run pretest && cross-env NODE_ENV=test nyc mocha --async-only --check-leaks --require babel-register",
     "map": "node -r source-map-support/register",
     "doc": "jsdoc2md src/*.js --configure jsdoc.json --template README.hbs > README.md",
-    "preversion": "npm run test:cover && npm run build && git add README.md"
+    "preversion": "npm run test:cover && npm run build && git add README.md",
+    "postversion": "npm publish && git push && git push --tags"
   },
   "repository": "ozum/fix-set",
   "keywords": [
