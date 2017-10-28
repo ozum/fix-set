@@ -1,6 +1,6 @@
 {
   "name": "fix-set",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "Lets you define prefix and suffix rules to test strings against.",
   "main": "lib",
   "files": [
