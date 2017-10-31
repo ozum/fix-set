@@ -4,6 +4,13 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.2.4 - 2017-10-31
+
+#### Changed
+
+* Configuration parameter is changed to optional.
+
+
 ### 0.2.3 - 2017-10-28
 
 #### Fixed

@@ -83,7 +83,7 @@ class FixSet {
    * @param {FixSetRuleConfig} [config.include]  - Inclusion rule configuration.
    * @param {FixSetRuleConfig} [config.exclude]  - Exclusion rule configuration.
    */
-  constructor(config: FixSetConfig) {
+  constructor(config?: FixSetConfig) {
     Joi.assert(config, FixSetConfigSchema);
 
     const internal   = getInternal(this);
