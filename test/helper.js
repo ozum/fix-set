@@ -32,6 +32,11 @@ describe('convertToSet', () => {
     done();
   });
 
+  it('should convert RegExp to Set of RegExp', (done) => {
+    expect(convertToSet(/a/)).to.equal(new Set([/a/]));
+    done();
+  });
+
   it('should throw non-compliant type', (done) => {
     const objectToSet = () => convertToSet({});
     expect(objectToSet).to.throw(/^input must be/);

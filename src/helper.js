@@ -15,11 +15,9 @@ function convertToSet<T: string | RegExp>(input?: Array<T> | Set<T> | T): Set<T>
     return new Set();
   } else if (input instanceof Set || Array.isArray(input)) {
     return new Set(input);
-  } else if (typeof input === 'string' || input instanceof RegExp) {
-    return new Set([input]);
   }
 
-  throw new Error('Not convertible to Set.');
+  return new Set([input]);
 }
 
 /**
@@ -37,11 +35,9 @@ function convertToArray<T: string | RegExp>(input?: Array<T> | Set<T> | T): Arra
     return input.slice(0);
   } else if (input instanceof Set) {
     return [...input];
-  } else if (typeof input === 'string' || input instanceof RegExp) {
-    return [input];
   }
 
-  throw new Error('Not convertible to Array.');
+  return [input];
 }
 
 /**
