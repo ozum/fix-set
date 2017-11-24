@@ -4,6 +4,17 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+### 0.3.0 - 2017-11-24
+
+#### Added
+
+* `flow-runtime` checks added.
+* Data types are consolidated in a single folder.
+
+#### Removed
+
+* Joi validations.
+
 ### 0.2.4 - 2017-10-31
 
 #### Changed
@@ -27,7 +38,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 
 #### Added
 
-* `FixSet#FixSetConfig` type export. 
+* `FixSet#FixSetConfig` type export.
 
 ### 0.1.1 - 2017-10-27
 

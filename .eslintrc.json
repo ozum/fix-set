@@ -1,6 +1,7 @@
 {
   "parser":  "babel-eslint",
-  "extends": ["airbnb"],
+  "extends": ["airbnb", "plugin:flowtype/recommended", "plugin:security/recommended"],
+  "plugins": ["flowtype", "security"],
   "env": {
     "es6":   true,
     "node":  true,
@@ -15,7 +16,9 @@
     "valid-jsdoc":       ["error"],
     "max-len":           ["error", 160, { "ignoreComments": true }],
     "new-cap":           ["error", { "capIsNewExceptions": ["List", "Map", "Set"] }],
-    "react/jsx-no-bind": ["error", { "ignoreRefs": false, "allowArrowFunctions": false, "allowBind": false }],
-    "no-param-reassign": ["off"]
+    "react/jsx-no-bind":    ["error", { "ignoreRefs": false, "allowArrowFunctions": false, "allowBind": false }],
+    "object-curly-newline": ["error", { "multiline": true }],
+    "no-param-reassign": ["off"],
+    "flowtype/space-after-type-colon": [ "off" ]
   }
 }

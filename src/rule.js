@@ -1,13 +1,15 @@
 // @flow
 
+import InternalData from 'internal-data';
 import { convertToArray, convertToSet, getNameWithoutFix, getRegExp } from './helper';
-import type { FixSetRuleConfig } from './index';
+import type { RuleConfig } from './index';
 
-const getInternal: (Rule) => Internal = require('internal-data')(); // eslint-disable-line no-use-before-define
+
+const internalData: InternalData<Rule, Internal> = new InternalData(); // eslint-disable-line no-use-before-define
 
 /**
  * Private attributes of object.
- * @typedef   {Object}  Rule~Internal
+ * @typedef   {Object}  Internal
  * @private
  * @property  {Set.<string>}    elements            - Strings which are covered by rule.
  * @property  {Set.<string>}    except              - Fields which are not covered by rule.
@@ -37,16 +39,13 @@ type Internal = {|
 class Rule {
   /**
    * Creates FixSet object.
-   * @param {FixSetRuleConfig} config  - Rule configuration.
+   * @param {RuleConfig} [config]  - Rule configuration.
    * @private
    */
-  constructor(config: FixSetRuleConfig) {
-    const {
-      prefixes, suffixes, exceptPrefixes, exceptSuffixes, replacePrefix, replaceSuffix, elements, except,
-    } = config || {};
+  constructor(config?: RuleConfig) {
+    const { prefixes, suffixes, exceptPrefixes, exceptSuffixes, replacePrefix, replaceSuffix, elements, except } = config || {};
 
-    const internal = getInternal(this);
-
+    const internal = internalData.get(this);
     internal.elements        = elements ? convertToSet(elements) : undefined;
     internal.except          = except ? convertToSet(except) : undefined;
     internal.prefixes        = prefixes ? convertToArray(prefixes).map(s => getRegExp(s, 'prefix')) : undefined;
@@ -66,7 +65,7 @@ class Rule {
    * @returns {{found: boolean, name: string }}             - Whether given element is covered by rule and element name after replacement if apply.
    */
   has(element: string, options: { replacePrefix?: boolean, replaceSuffix?: boolean } = {}): {| found: boolean, name: string |} {
-    const internal      = getInternal(this);
+    const internal = internalData.get(this);
     const replacePrefix = options.replacePrefix === undefined ? internal.replacePrefix : options.replacePrefix;
     const replaceSuffix = options.replaceSuffix === undefined ? internal.replaceSuffix : options.replaceSuffix;
 

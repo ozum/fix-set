@@ -33,56 +33,34 @@ const testCases = {
   },
   includeOnly: {
     description: 'Include only',
-    config:      {
-      include: {
-        prefixes:       'a', exceptPrefixes: 'aa', replacePrefix:  true, replaceSuffix:  true,
-      },
-    },
-    found:    { a: '', abc: 'bc' },
-    notFound: ['ba', ' a', 'A', 'aabc'],
+    config:      { include: { prefixes: 'a', exceptPrefixes: 'aa', replacePrefix: true, replaceSuffix: true } },
+    found:       { a: '', abc: 'bc' },
+    notFound:    ['ba', ' a', 'A', 'aabc'],
   },
   includeAndExceptOnly: {
     description: 'Include and except only',
-    config:      {
-      include: {
-        exceptPrefixes: 'aa', replacePrefix:  true, replaceSuffix:  true,
-      },
-    },
-    found:    { a: 'a', abc: 'abc' },
-    notFound: ['aabc'],
+    config:      { include: { exceptPrefixes: 'aa', replacePrefix: true, replaceSuffix: true } },
+    found:       { a: 'a', abc: 'abc' },
+    notFound:    ['aabc'],
   },
   excludeAndExceptOnly: {
     description: 'Exclude and except only',
-    config:      {
-      exclude: {
-        exceptPrefixes: 'aa', replacePrefix:  true, replaceSuffix:  true,
-      },
-    },
-    found:    { aabc: 'bc' },
-    notFound: ['abc', 'bc'],
+    config:      { exclude: { exceptPrefixes: 'aa', replacePrefix: true, replaceSuffix: true } },
+    found:       { aabc: 'bc' },
+    notFound:    ['abc', 'bc'],
   },
   excludeOnly: {
     description: 'Exclude only',
-    config:      {
-      exclude: {
-        prefixes:       'a', exceptPrefixes: 'aa', replacePrefix:  true, replaceSuffix:  true,
-      },
-    },
-    found: {
-      ba:   'ba', ' a': ' a', A:    'A', aabc: 'bc',
-    },
-    notFound: ['a', 'abc'],
+    config:      { exclude: { prefixes: 'a', exceptPrefixes: 'aa', replacePrefix: true, replaceSuffix: true } },
+    found:       { ba: 'ba', ' a': ' a', A: 'A', aabc: 'bc' },
+    notFound:    ['a', 'abc'],
   },
 
   includeExclude: {
     description: 'Include and exclude combined',
     config:      {
-      include: {
-        prefixes:       'a', exceptPrefixes: 'aaaa', replacePrefix:  true, replaceSuffix:  true,
-      },
-      exclude: {
-        prefixes:       'aa', exceptPrefixes: 'aaa', replacePrefix:  true, replaceSuffix:  true,
-      },
+      include: { prefixes: 'a', exceptPrefixes: 'aaaa', replacePrefix: true, replaceSuffix: true },
+      exclude: { prefixes: 'aa', exceptPrefixes: 'aaa', replacePrefix: true, replaceSuffix: true },
     },
     found:    { aAge: 'Age', aaaAge: 'aaAge' }, // include rule is prioritized in naming, exclude rule is prioritized in decision.
     notFound: ['aaAge', 'aaaaAge'],
@@ -91,12 +69,8 @@ const testCases = {
   includeExcludeRegExp: {
     description: 'Include and exclude combined with regular expression.',
     config:      {
-      include: {
-        suffixes:       /=(.+?)=$/, exceptSuffixes: '=forbidden=', replacePrefix:  true, replaceSuffix:  true,
-      },
-      exclude: {
-        suffixes:       new RegExp('==(.+?)=$'), exceptSuffixes: '==include=', replacePrefix:  true, replaceSuffix:  true,
-      },
+      include: { suffixes: /=(.+?)=$/, exceptSuffixes: '=forbidden=', replacePrefix: true, replaceSuffix: true },
+      exclude: { suffixes: new RegExp('==(.+?)=$'), exceptSuffixes: '==include=', replacePrefix: true, replaceSuffix: true },
     },
     found:    { 'name=eq=': 'name', 'name==include=': 'name' }, // include rule is prioritized in naming, exclude rule is prioritized in decision.
     notFound: ['name==other=', 'name=forbidden='],
@@ -104,15 +78,12 @@ const testCases = {
 };
 
 // Execute test cases:
-Object.keys(testCases).forEach((key) => {
-  const testCase = testCases[key];
-
+Object.values(testCases).forEach((testCase) => {
   describe(testCase.description, () => {
     const rule = new FixSet(testCase.config);
 
     if (testCase.found) {
-      Object.keys(testCase.found).forEach((field, i) => {
-        const expected = testCase.found[field];
+      Object.entries(testCase.found).forEach(([field, expected], i) => {
         it(`should return element name in sample index ${i}.`, (done) => {
           expect(rule.has(field)).to.be.true();
           expect(rule.getName(field)).to.equal(expected);
@@ -135,11 +106,7 @@ Object.keys(testCases).forEach((key) => {
 
 describe('getName method', () => {
   it('should allow optional replacement of prefix and suffix.', (done) => {
-    const rule = new FixSet({
-      include: {
-        prefixes:      'a', suffixes:      'z', replacePrefix: true, replaceSuffix: true,
-      },
-    });
+    const rule = new FixSet({ include: { prefixes: 'a', suffixes: 'z', replacePrefix: true, replaceSuffix: true } });
     const result = rule.getName('abbz', { replacePrefix: false, replaceSuffix: false });
 
     expect(result).to.equal('abbz');
@@ -148,18 +115,18 @@ describe('getName method', () => {
 });
 
 describe('FixSet', () => {
-  it('should throw when Joi assertion fails - 1.', (done) => {
-    expect(() => new FixSet({ include: 3 })).to.throw(/"include" must be an object/);
+  it('should throw when input assertion fails - 1.', (done) => {
+    expect(() => new FixSet({ include: 3 })).to.throw(/^config/);
     done();
   });
 
-  it('should throw when Joi assertion fails - 2.', (done) => {
-    expect(() => new FixSet({ xxx: 3 })).to.throw(/"xxx" is not allowed/);
+  it('should throw when input assertion fails - 2.', (done) => {
+    expect(() => new FixSet({ xxx: 3 })).to.throw(/^config/);
     done();
   });
 
-  it('should throw when Joi assertion fails - 2.', (done) => {
-    expect(() => new FixSet({ include: { elements: 3 } })).to.throw(/"elements" must be an array/);
+  it('should throw when input assertion fails - 2.', (done) => {
+    expect(() => new FixSet({ include: { elements: 3 } })).to.throw(/^config/);
     done();
   });
 });

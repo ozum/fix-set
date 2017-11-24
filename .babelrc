@@ -1,22 +1,16 @@
 {
   "presets": [
-    "flow",
-    ["env",
-      {
-        "targets": { "node": "current" },
-        "useBuiltIns": true
-      }
-    ]
+    "flow", ["env", { "targets": { "node": "current" }, "useBuiltIns": true }]
   ],
   "plugins": [
-    "add-module-exports"
+    "add-module-exports",
+    "transform-export-extensions",
+    "transform-decorators-legacy", "transform-class-properties", ["flow-runtime", { "assert": true, "annotate": true }]
   ],
   "env": {
     "test": {
       "plugins": [
-        ["istanbul", {
-          "useInlineSourceMaps": false
-        }]
+        ["istanbul", { "useInlineSourceMaps": false }]
       ]
     }
   },

@@ -1,5 +1,7 @@
 // @flow
 
+import lodash from 'lodash';
+
 /**
  * Creates a new Set object from given input. If given value is a scalar, converts it to an array and then creates Set.
  * If input is undefined, returns empty Set.
@@ -8,7 +10,7 @@
  * @returns {Set}                                                     - Created Set or undefined.
  * @throws  {Error}                                                   - Throws error if input type cannot be converted to Set.
  */
-function convertToSet<T: string|RegExp>(input?: Array<T>|Set<T>|T): Set<T> {
+function convertToSet<T: string | RegExp>(input?: Array<T> | Set<T> | T): Set<T> {
   if (input === undefined) {
     return new Set();
   } else if (input instanceof Set || Array.isArray(input)) {
@@ -28,7 +30,7 @@ function convertToSet<T: string|RegExp>(input?: Array<T>|Set<T>|T): Set<T> {
  * @returns {Array}                                                 - Created Set or undefined.
  * @throws  {Error}                                                 - Throws error if input type cannot be converted to Array.
  */
-function convertToArray<T: string|RegExp>(input?: Array<T>|Set<T>|T): Array<T> {
+function convertToArray<T: string | RegExp>(input?: Array<T> | Set<T> | T): Array<T> {
   if (input === undefined) {
     return [];
   } else if (Array.isArray(input)) {
@@ -69,24 +71,6 @@ function getNameWithoutFix(element: string, prefixes?: Array<RegExp>, suffixes?:
   return undefined;
 }
 
-// Used to match `RegExp`. See: https://github.com/lodash/lodash/blob/master/escapeRegExp.js
-const reRegExpChar = /[\\^$.*+?()[\]{}|]/g;
-const reHasRegExpChar = new RegExp(reRegExpChar.source);
-
-/**
- * Escapes the `RegExp` special characters "^", "$", "\", ".", "*", "+",
- * "?", "(", ")", "[", "]", "{", "}", and "|" in `string`.
- * @private
- * @param   {string} string                     - The string to escape.
- * @returns {string}                            - Returns the escaped string.
- * @see https://github.com/lodash/lodash/blob/master/escapeRegExp.js
- */
-function escapeRegExp(string: string): string {
-  return (string && reHasRegExpChar.test(string))
-    ? string.replace(reRegExpChar, '\\$&')
-    : string;
-}
-
 /**
  * Converts prefix or suffix strings into regular expression after adding `^` or `$`. Also escapes regular expression
  * characters. If input is already a regular expression, returns it as it is.
@@ -96,7 +80,7 @@ function escapeRegExp(string: string): string {
  * @returns {RegExp}                            - Regular expression to use.
  * @throws  {Error}                             - If input is already RegExp and does not have `^` or `$` as necessary, this function throws error.
  */
-function getRegExp(input?: string|RegExp, type: 'prefix'|'suffix'): RegExp {
+function getRegExp(input?: string | RegExp, type: 'prefix' | 'suffix'): RegExp {
   if (input instanceof RegExp) {
     const { source } = input;
     if (type === 'prefix' && source.charAt(0) !== '^') {
@@ -110,10 +94,10 @@ function getRegExp(input?: string|RegExp, type: 'prefix'|'suffix'): RegExp {
     return new RegExp('');
   }
 
-  let source = escapeRegExp(input);
+  let source = lodash.escapeRegExp(input);
   source = (type === 'prefix') ? `^${source}` : `${source}$`;
 
-  return new RegExp(source);
+  return new RegExp(source); // eslint-disable-line security/detect-non-literal-regexp
 }
 
-export { convertToArray, convertToSet, getNameWithoutFix, escapeRegExp, getRegExp };
+export { convertToArray, convertToSet, getNameWithoutFix, getRegExp };

@@ -1,68 +1,14 @@
 // @flow
 
-import Joi from 'joi';
-import Rule from './rule';
-
-const getInternal: (FixSet) => Internal = require('internal-data')(); // eslint-disable-line no-use-before-define
-
-/**
- * Fix rule options to create a fix rule from given options. Prefix and suffix parameters can be either string
- * or regular expression. If they are provided as regular expressions, they must begin with `^` or end with `$`.
- * If no `prefixes` and `suffixes` provided, it is assumed all strings are included except `exceptPrefixes`
- * and `exceptSuffixes`.
- * @typedef  {Object} FixSetRuleConfig
- * @property {string|Array.<string>|Set.<string>}                      [element]             - Strings which are covered by rule. They are compared by equal operator.
- * @property {string|Array.<string>|Set.<string>}                      [except]              - Fields which are not covered by rule.
- * @property {string|RegExp|Array.<string|RegExp>|Set.<string|RegExp>} [prefixes]            - Strings which starts with given prefixes are covered by rule.
- * @property {string|RegExp|Array.<string|RegExp>|Set.<string|RegExp>} [suffixes]            - Strings which ends with given suffixes are covered by rule.
- * @property {string|RegExp|Array.<string|RegExp>|Set.<string|RegExp>} [exceptPrefixes]      - Strings which starts with given prefixes are NOT covered by rule.
- * @property {string|RegExp|Array.<string|RegExp>|Set.<string|RegExp>} [exceptSuffixes]      - Strings which ends with given suffixes are NOT covered by rule.
- * @property {boolean}                                                 [replacePrefix]       - Whether it should prefix be stripped from start of field name
- * @property {boolean}                                                 [replaceSuffix]       - Whether it should suffix be stripped from end of field name.
- */
-type FixSetRuleConfig = {|
-  elements?:       string | Array<string> | Set<string>,
-  except?:         string | Array<string> | Set<string>,
-  prefixes?:       Array<string|RegExp> | Set<string|RegExp> | string | RegExp,
-  suffixes?:       Array<string|RegExp> | Set<string|RegExp> | string | RegExp,
-  exceptPrefixes?: Array<string|RegExp> | Set<string|RegExp> | string | RegExp,
-  exceptSuffixes?: Array<string|RegExp> | Set<string|RegExp> | string | RegExp,
-  replacePrefix?:  boolean,
-  replaceSuffix?:  boolean,
-|};
-
-
-const FixSchema = Joi.alternatives(Joi.array().items(Joi.string(), Joi.object().type(RegExp)), Joi.string(), Joi.object().type(RegExp), Joi.object().type(Set));
-
-const FixSetRuleConfigSchema = Joi.object({
-  elements:       Joi.alternatives(Joi.array().items(Joi.string()), Joi.string(), Joi.object().type(Set)).optional(),
-  except:         Joi.alternatives(Joi.array().items(Joi.string()), Joi.string(), Joi.object().type(Set)).optional(),
-  prefixes:       FixSchema.optional(),
-  suffixes:       FixSchema.optional(),
-  exceptPrefixes: FixSchema.optional(),
-  exceptSuffixes: FixSchema.optional(),
-  replacePrefix:  Joi.boolean().optional(),
-  replaceSuffix:  Joi.boolean().optional(),
-}).unknown(false);
-
-const FixSetConfigSchema = Joi.object({ include: FixSetRuleConfigSchema.optional(), exclude: FixSetRuleConfigSchema.optional() }).unknown(false);
-
-
-/**
- * Fix rule configuration.
- * @typedef {Object}              FixSetConfig
- * @property {FixSetRuleConfig}   include         - Configuration rules for included fields.
- * @property {FixSetRuleConfig}   exclude         - Configuration rules for excluded fields.
- */
-type FixSetConfig = {|
-  include?: FixSetRuleConfig,
-  exclude?: FixSetRuleConfig,
-|};
+// import Joi    from 'joi';
+import InternalData from 'internal-data';
+import Rule   from './rule';
+import type { RuleConfig, FixSetConfig } from './types';
 
 /**
  * Private attributes of object.
  * @private
- * @typedef  {Object} FixSet~Internal
+ * @typedef  {Object} Internal
  * @property {Rule} [include]   - Rule instance for included elements.
  * @property {Rule} [exclude]   - Rule instance for excluded elements.
  */
@@ -71,22 +17,26 @@ type Internal = {|
   exclude?: Rule,
 |}
 
+const internalData: InternalData<FixSet, Internal> = new InternalData(); // eslint-disable-line no-use-before-define
+
 /**
  * Class representing a filter rule. A rule consists of prefixes, elements and disallowed elements etc. Later individual elements
  * can be tested if they are covered by this rule.
  */
 class FixSet {
+  deneme: string;
   /**
    * Creates FixSet object. If no `include` or `exclude` parameters provided or empty configurations are provided, they
    * would be skipped.
    * @param {Object}           [config]          - Configuration.
-   * @param {FixSetRuleConfig} [config.include]  - Inclusion rule configuration.
-   * @param {FixSetRuleConfig} [config.exclude]  - Exclusion rule configuration.
+   * @param {RuleConfig} [config.include]  - Inclusion rule configuration.
+   * @param {RuleConfig} [config.exclude]  - Exclusion rule configuration.
    */
   constructor(config?: FixSetConfig) {
-    Joi.assert(config, FixSetConfigSchema);
+    // const validation = Joi.validate(config, FixSetConfigSchema);
+    // if (validation.error) { throw new Error(validation.error.annotate()); }
 
-    const internal   = getInternal(this);
+    const internal   = internalData.get(this);
     const { include, exclude } = config || {};
 
     internal.include = (include && Object.keys(include).length > 0) ? new Rule(include) : undefined;
@@ -103,7 +53,7 @@ class FixSet {
    * @returns {string|undefined}                            - Element name if it is covered by rule, undefined otherwise. Name getName prefix and suffix replaced if requested by rule.
    */
   getName(element: string, options: { replacePrefix?: boolean, replaceSuffix?: boolean } = {}): string | void {
-    const internal      = getInternal(this);
+    const internal      = internalData.get(this);
     const excluded      = internal.exclude && internal.exclude.has(element, options);  // Whether it is in exclude list.
     const included      = internal.include && internal.include.has(element, options);  // Get name without prefixes and suffixes.
 
@@ -129,6 +79,6 @@ class FixSet {
   }
 }
 
-export type { FixSetRuleConfig, FixSetConfig };
+export type { RuleConfig, FixSetConfig };
 
 export default FixSet;

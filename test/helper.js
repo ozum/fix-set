@@ -1,5 +1,5 @@
 import Code from 'code';
-import { convertToArray, convertToSet, getNameWithoutFix, escapeRegExp, getRegExp } from '../src/helper';
+import { convertToArray, convertToSet, getNameWithoutFix, getRegExp } from '../src/helper';
 
 const { expect }  = Code;
 
@@ -34,7 +34,7 @@ describe('convertToSet', () => {
 
   it('should throw non-compliant type', (done) => {
     const objectToSet = () => convertToSet({});
-    expect(objectToSet).to.throw('Not convertible to Set.');
+    expect(objectToSet).to.throw(/^input must be/);
     done();
   });
 });
@@ -65,7 +65,7 @@ describe('convertToArray', () => {
 
   it('should throw non-compliant type', (done) => {
     const objectToArray = () => convertToArray({});
-    expect(objectToArray).to.throw('Not convertible to Array.');
+    expect(objectToArray).to.throw(/^input must be/);
     done();
   });
 });
@@ -97,18 +97,6 @@ describe('getNameWithouFix', () => {
 
   it('Return name for included suffix', (done) => {
     expect(getNameWithoutFix('Namez', ...argsNoReplace)).to.equal('Namez');
-    done();
-  });
-});
-
-describe('escapeRegExp', () => {
-  it('should escape regexp', (done) => {
-    expect(escapeRegExp('a?')).to.equal('a\\?');
-    done();
-  });
-
-  it('should return undefined as it is', (done) => {
-    expect(escapeRegExp()).to.equal(undefined);
     done();
   });
 });
