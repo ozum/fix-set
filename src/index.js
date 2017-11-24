@@ -25,6 +25,7 @@ const internalData: InternalData<FixSet, Internal> = new InternalData(); // esli
  */
 class FixSet {
   deneme: string;
+
   /**
    * Creates FixSet object. If no `include` or `exclude` parameters provided or empty configurations are provided, they
    * would be skipped.

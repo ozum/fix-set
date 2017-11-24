@@ -28,6 +28,8 @@ export type RuleConfig = {|
   replaceSuffix?:  boolean,
 |};
 
+1; // eslint-disable-line no-unused-expressions
+
 // Allow Array<string | RegExp) or string or RegExp or Set.
 // const PrefixSchema = Joi.alternatives(
 //   Joi.array().items(Joi.string(), Joi.object().type(RegExp)),

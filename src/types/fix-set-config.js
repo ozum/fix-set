@@ -15,6 +15,8 @@ export type FixSetConfig = {|
   exclude?: RuleConfig,
 |};
 
+1; // eslint-disable-line no-unused-expressions
+
 // const FixSetConfigSchema = Joi.object({
 //   include: RuleConfigSchema.optional(),
 //   exclude: RuleConfigSchema.optional(),

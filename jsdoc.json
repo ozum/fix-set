@@ -1,3 +1,7 @@
 {
-  "plugins": ["node_modules/jsdoc-babel"]
+  "plugins": ["plugins/markdown", "node_modules/jsdoc-babel"],
+  "babel": {
+    "babelrc": false,
+    "presets": ["flow", ["env", { "targets": { "node": "current" }, "useBuiltIns": true }]]
+  }
 }
