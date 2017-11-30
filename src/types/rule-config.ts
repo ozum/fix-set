@@ -1,6 +1,4 @@
-// @flow
-
-// import Joi from 'joi';
+import * as Joi from 'joi';
 
 /**
  * Fix rule options to create a fix rule from given options. Prefix and suffix parameters can be either string
@@ -17,7 +15,8 @@
  * @property {boolean}                                                 [replacePrefix]       - Whether it should prefix be stripped from start of field name
  * @property {boolean}                                                 [replaceSuffix]       - Whether it should suffix be stripped from end of field name.
  */
-export type RuleConfig = {|
+
+type RuleConfig = {
   elements?:       string | Array<string> | Set<string>,
   except?:         string | Array<string> | Set<string>,
   prefixes?:       Array<string | RegExp> | Set<string | RegExp> | string | RegExp,
@@ -26,28 +25,25 @@ export type RuleConfig = {|
   exceptSuffixes?: Array<string | RegExp> | Set<string | RegExp> | string | RegExp,
   replacePrefix?:  boolean,
   replaceSuffix?:  boolean,
-|};
-
-1; // eslint-disable-line no-unused-expressions
+};
 
 // Allow Array<string | RegExp) or string or RegExp or Set.
-// const PrefixSchema = Joi.alternatives(
-//   Joi.array().items(Joi.string(), Joi.object().type(RegExp)),
-//   Joi.string(),
-//   Joi.object().type(RegExp),
-//   Joi.object().type(Set),
-// );
+const PrefixSchema = Joi.alternatives(
+  Joi.array().items(Joi.string(), Joi.object().type(RegExp)),
+  Joi.string(),
+  Joi.object().type(RegExp),
+  Joi.object().type(Set),
+);
 
-// const RuleConfigSchema = Joi.object({
-//   elements:       Joi.alternatives(Joi.array().items(Joi.string()), Joi.string(), Joi.object().type(Set)).optional(),
-//   except:         Joi.alternatives(Joi.array().items(Joi.string()), Joi.string(), Joi.object().type(Set)).optional(),
-//   prefixes:       PrefixSchema,
-//   suffixes:       PrefixSchema,
-//   exceptPrefixes: PrefixSchema,
-//   exceptSuffixes: PrefixSchema,
-//   replacePrefix:  Joi.boolean().optional(),
-//   replaceSuffix:  Joi.boolean().optional(),
-// }).unknown(false);
+const RuleConfigSchema = Joi.object({
+  elements:       Joi.alternatives(Joi.array().items(Joi.string()), Joi.string(), Joi.object().type(Set)).optional(),
+  except:         Joi.alternatives(Joi.array().items(Joi.string()), Joi.string(), Joi.object().type(Set)).optional(),
+  prefixes:       PrefixSchema,
+  suffixes:       PrefixSchema,
+  exceptPrefixes: PrefixSchema,
+  exceptSuffixes: PrefixSchema,
+  replacePrefix:  Joi.boolean().optional(),
+  replaceSuffix:  Joi.boolean().optional(),
+}).unknown(false);
 
-// export type { RuleConfig };
-// export { RuleConfigSchema };
+export { RuleConfig, RuleConfigSchema };

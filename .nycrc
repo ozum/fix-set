@@ -4,21 +4,21 @@
   "branches":       100,
   "functions":      100,
   "statements":     100,
-  "cache":          true,
+  "cache":          false,
   "check-coverage": true,
+  "extension": [
+    ".ts",
+    ".tsx"
+  ],
   "exclude": [
     "lib",
+    "doc-lib",
     "coverage",
-    "test"
+    "test",
+    "**/*.d.ts"
   ],
   "reporter": [
     "text",
     "html"
-  ],
-  "require": [
-    "babel-register"
-  ],
-  "sourceMap": false,
-  "instrument": false
+  ]
 }
-

@@ -1,6 +1,4 @@
-// @flow
-
-import lodash from 'lodash';
+import * as lodash from 'lodash';
 
 /**
  * Creates a new Set object from given input. If given value is a scalar, converts it to an array and then creates Set.
@@ -10,12 +8,9 @@ import lodash from 'lodash';
  * @returns {Set}                                                     - Created Set or undefined.
  * @throws  {Error}                                                   - Throws error if input type cannot be converted to Set.
  */
-function convertToSet<T: string | RegExp>(input?: Array<T> | Set<T> | T): Set<T> {
-  if (input === undefined) {
-    return new Set();
-  } else if (input instanceof Set || Array.isArray(input)) {
-    return new Set(input);
-  }
+function convertToSet<T extends string | RegExp>(input?: Array<T> | Set<T> | T): Set<T> {
+  if (input === undefined)                          { return new Set(); }
+  if (input instanceof Set || Array.isArray(input)) { return new Set(input); }
 
   return new Set([input]);
 }
@@ -28,14 +23,10 @@ function convertToSet<T: string | RegExp>(input?: Array<T> | Set<T> | T): Set<T>
  * @returns {Array}                                                 - Created Set or undefined.
  * @throws  {Error}                                                 - Throws error if input type cannot be converted to Array.
  */
-function convertToArray<T: string | RegExp>(input?: Array<T> | Set<T> | T): Array<T> {
-  if (input === undefined) {
-    return [];
-  } else if (Array.isArray(input)) {
-    return input.slice(0);
-  } else if (input instanceof Set) {
-    return [...input];
-  }
+function convertToArray<T extends string | RegExp>(input?: Array<T> | Set<T> | T): Array<T> {
+  if (input === undefined)  { return []; }
+  if (Array.isArray(input)) { return input.slice(0); }
+  if (input instanceof Set) { return [...input]; }
 
   return [input];
 }
@@ -51,11 +42,11 @@ function convertToArray<T: string | RegExp>(input?: Array<T> | Set<T> | T): Arra
  * @param   {boolean}           replaceSuffix   - Whether to replace suffix in name.
  * @returns {string|undefined}                  - Name of the lement if it getName any of the fixes after replacement rules applied.
  */
-function getNameWithoutFix(element: string, prefixes?: Array<RegExp>, suffixes?: Array<RegExp>, replacePrefix: boolean, replaceSuffix: boolean): string | void { // eslint-disable-line max-len
+function getNameWithoutFix(element: string, prefixes: Array<RegExp> | undefined, suffixes: Array<RegExp> | undefined, replacePrefix: boolean, replaceSuffix: boolean): string | void {
   let name = element;
 
-  const prefix = prefixes && prefixes.find(f => element.match(f));
-  const suffix = suffixes && suffixes.find(f => element.match(f));
+  const prefix = prefixes && prefixes.find(f => element.search(f) > -1);
+  const suffix = suffixes && suffixes.find(f => element.search(f) > -1);
 
   if (prefix || suffix) {
     name = replacePrefix && prefix ? name.replace(prefix, '') : name;
@@ -76,7 +67,7 @@ function getNameWithoutFix(element: string, prefixes?: Array<RegExp>, suffixes?:
  * @returns {RegExp}                            - Regular expression to use.
  * @throws  {Error}                             - If input is already RegExp and does not have `^` or `$` as necessary, this function throws error.
  */
-function getRegExp(input?: string | RegExp, type: 'prefix' | 'suffix'): RegExp {
+function getRegExp(input: string | RegExp | undefined, type: 'prefix' | 'suffix'): RegExp {
   if (input instanceof RegExp) {
     const { source } = input;
     if (type === 'prefix' && source.charAt(0) !== '^') {
@@ -86,14 +77,15 @@ function getRegExp(input?: string | RegExp, type: 'prefix' | 'suffix'): RegExp {
     }
 
     return input;
-  } else if (input === undefined) {
+  }
+  if (input === undefined) {
     return new RegExp('');
   }
 
   let source = lodash.escapeRegExp(input);
   source = (type === 'prefix') ? `^${source}` : `${source}$`;
 
-  return new RegExp(source); // eslint-disable-line security/detect-non-literal-regexp
+  return new RegExp(source);
 }
 
 export { convertToArray, convertToSet, getNameWithoutFix, getRegExp };

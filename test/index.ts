@@ -1,9 +1,9 @@
-import Code from 'code';
-import FixSet from '../src/index';
+import { expect } from 'chai';
+import FixSet     from '../src/index';
 
-const { expect }  = Code;
+type TestCases = { [name: string]: { description: string, config?: Object, found?: Object, notFound?: Array<string> } };
 
-const testCases = {
+const testCases: TestCases = {
   noRule: {
     description: 'No rule',
     found:       { a: 'a', abc: 'abc' },
@@ -85,7 +85,7 @@ Object.values(testCases).forEach((testCase) => {
     if (testCase.found) {
       Object.entries(testCase.found).forEach(([field, expected], i) => {
         it(`should return element name in sample index ${i}.`, (done) => {
-          expect(rule.has(field)).to.be.true();
+          expect(rule.has(field)).to.be.true;
           expect(rule.getName(field)).to.equal(expected);
           done();
         });
@@ -95,8 +95,8 @@ Object.values(testCases).forEach((testCase) => {
     if (testCase.notFound) {
       testCase.notFound.forEach((element, i) => {
         it(`should report non-compliant elements as false in sample index ${i}`, (done) => {
-          expect(rule.has(element)).to.be.false();
-          expect(rule.getName(element)).to.undefined();
+          expect(rule.has(element)).to.be.false;
+          expect(rule.getName(element)).to.undefined;
           done();
         });
       });
@@ -109,24 +109,24 @@ describe('getName method', () => {
     const rule = new FixSet({ include: { prefixes: 'a', suffixes: 'z', replacePrefix: true, replaceSuffix: true } });
     const result = rule.getName('abbz', { replacePrefix: false, replaceSuffix: false });
 
-    expect(result).to.equal('abbz');
+    expect(result).to.deep.equal('abbz');
     done();
   });
 });
 
 describe('FixSet', () => {
   it('should throw when input assertion fails - 1.', (done) => {
-    expect(() => new FixSet({ include: 3 })).to.throw(/^config/);
+    expect(() => new FixSet({ include: 3 } as any)).to.throw(/"include"/);
     done();
   });
 
   it('should throw when input assertion fails - 2.', (done) => {
-    expect(() => new FixSet({ xxx: 3 })).to.throw(/^config/);
+    expect(() => new FixSet({ xxx: 3 } as any)).to.throw(/"xxx"/);
     done();
   });
 
   it('should throw when input assertion fails - 2.', (done) => {
-    expect(() => new FixSet({ include: { elements: 3 } })).to.throw(/^config/);
+    expect(() => new FixSet({ include: { elements: 3 } } as any)).to.throw(/"include"/);
     done();
   });
 });

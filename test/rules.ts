@@ -1,7 +1,5 @@
-import Code from 'code';
-import Rule from '../src/rule';
-
-const { expect }  = Code;
+import { expect } from 'chai';
+import Rule       from '../src/rule';
 
 const testCases = {
   prefixes: {
@@ -61,14 +59,14 @@ Object.values(testCases).forEach((testCase) => {
 
     Object.entries(testCase.found).forEach(([field, expected], i) => {
       it(`should find name in sample index ${i}.`, (done) => {
-        expect(rule.has(field)).to.equal({ found: true, name: expected });
+        expect(rule.has(field)).to.deep.equal({ found: true, name: expected });
         done();
       });
     });
 
     Object.entries(testCase.notFound).forEach(([field, expected], i) => {
       it(`should not find name in sample index ${i}.`, (done) => {
-        expect(rule.has(field)).to.equal({ found: false, name: expected });
+        expect(rule.has(field)).to.deep.equal({ found: false, name: expected });
         done();
       });
     });
@@ -80,7 +78,7 @@ describe('has method', () => {
     const rule = new Rule({ prefixes: 'a', suffixes: 'z', replacePrefix: true, replaceSuffix: true });
     const result = rule.has('abbz', { replacePrefix: false, replaceSuffix: false });
 
-    expect(result).to.equal({ found: true, name: 'abbz' });
+    expect(result).to.deep.equal({ found: true, name: 'abbz' });
     done();
   });
 
@@ -88,7 +86,7 @@ describe('has method', () => {
     const rule = new Rule();
     const result = rule.has('abbz');
 
-    expect(result).to.equal({ found: true, name: 'abbz' });
+    expect(result).to.deep.equal({ found: true, name: 'abbz' });
     done();
   });
 });
