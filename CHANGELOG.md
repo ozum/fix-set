@@ -4,22 +4,15 @@
 
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-### 0.4.0 - 2017-12-17
+### 0.3.0 - 2017-12-17
+
+#### Added
+
+* Joi validations.
 
 #### Changed
 
 * From Flow to TypeScript.
-
-### 0.3.0 - 2017-11-24
-
-#### Added
-
-* `flow-runtime` checks added.
-* Data types are consolidated in a single folder.
-
-#### Removed
-
-* Joi validations.
 
 ### 0.2.4 - 2017-10-31
 
