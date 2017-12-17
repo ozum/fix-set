@@ -1,5 +1,3 @@
-import * as Joi from 'joi';
-
 /**
  * Fix rule options to create a fix rule from given options. Prefix and suffix parameters can be either string
  * or regular expression. If they are provided as regular expressions, they must begin with `^` or end with `$`.
@@ -15,6 +13,8 @@ import * as Joi from 'joi';
  * @property {boolean}                                                 [replacePrefix]       - Whether it should prefix be stripped from start of field name
  * @property {boolean}                                                 [replaceSuffix]       - Whether it should suffix be stripped from end of field name.
  */
+
+import * as Joi from 'joi';
 
 type RuleConfig = {
   elements?:       string | Array<string> | Set<string>,

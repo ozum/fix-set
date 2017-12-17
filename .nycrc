@@ -4,7 +4,7 @@
   "branches":       100,
   "functions":      100,
   "statements":     100,
-  "cache":          false,
+  "cache":          true,
   "check-coverage": true,
   "extension": [
     ".ts",
@@ -12,13 +12,13 @@
   ],
   "exclude": [
     "lib",
-    "doc-lib",
     "coverage",
     "test",
     "**/*.d.ts"
   ],
   "reporter": [
     "text",
-    "html"
+    "html",
+    "lcov"
   ]
 }

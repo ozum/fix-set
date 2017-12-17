@@ -1,12 +1,12 @@
-import * as Joi from 'joi';
-import { RuleConfig, RuleConfigSchema } from './rule-config';
-
 /**
  * Fix rule configuration.
- * @typedef {Object}              FixSetConfig
+ * @typedef {Object} FixSetConfig
  * @property {RuleConfig}   include         - Configuration rules for included fields.
  * @property {RuleConfig}   exclude         - Configuration rules for excluded fields.
  */
+
+import * as Joi from 'joi';
+import { RuleConfig, RuleConfigSchema } from './rule-config';
 
 type FixSetConfig = {
   include?: RuleConfig,

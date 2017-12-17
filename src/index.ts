@@ -1,6 +1,6 @@
 import * as Joi from 'joi';
 import Rule     from './rule';
-import { RuleConfig, FixSetConfig, FixSetConfigSchema } from './types';
+import { RuleConfig, FixSetConfig, FixSetConfigSchema, RuleConfigSchema } from './types/index';
 
 /**
  * Class representing a filter rule. A rule consists of prefixes, elements and disallowed elements etc. Later individual elements
@@ -13,9 +13,8 @@ class FixSet {
   /**
    * Creates FixSet object. If no `include` or `exclude` parameters provided or empty configurations are provided, they
    * would be skipped.
-   * @param {Object}     [config]          - Configuration.
-   * @param {RuleConfig} [config.include]  - Inclusion rule configuration.
-   * @param {RuleConfig} [config.exclude]  - Exclusion rule configuration.
+   * @param {FixSetConfig}  [config]  - Configuration.
+   * @return {FixSet}                 - Object
    */
   constructor(config: FixSetConfig = {}) {
     const validation = Joi.validate(config, FixSetConfigSchema);
@@ -30,11 +29,11 @@ class FixSet {
   /**
    * Returns element name if it is covered by rule. Returns undefined otherwise. Prefix and suffix in element name
    * is replaced if requested by rule.
-   * @param   {string}              element                   - Element name to test whether it is covered by rule.
-   * @param   {Object}              [options={}]              - Options
-   * @param   {boolean | undefined} [options.replacePrefix]   - Whether it should prefix be stripped from start of field name. Defaults to value given during object cunstruction.
-   * @param   {boolean | undefined} [options.replaceSuffix]   - Whether it should suffix be stripped from end of field name. Defaults to value given during object cunstruction.
-   * @returns {string | undefined}                            - Element name if it is covered by rule, undefined otherwise. Name getName prefix and suffix replaced if requested by rule.
+   * @param  {string}              element                   - Element name to test whether it is covered by rule.
+   * @param  {Object}              [options={}]              - Options
+   * @param  {boolean | undefined} [options.replacePrefix]   - Whether it should prefix be stripped from start of field name. Defaults to value given during object cunstruction.
+   * @param  {boolean | undefined} [options.replaceSuffix]   - Whether it should suffix be stripped from end of field name. Defaults to value given during object cunstruction.
+   * @return {string | undefined}                            - Element name if it is covered by rule, undefined otherwise. Name getName prefix and suffix replaced if requested by rule.
    */
   getName(element: string, options: { replacePrefix?: boolean, replaceSuffix?: boolean } = {}): string | void {
     const excluded      = this._exclude && this._exclude.has(element, options);  // Whether it is in exclude list.
@@ -49,8 +48,8 @@ class FixSet {
 
   /**
    * Returns whether element is covered by rules.
-   * @param   {string}  element - Element name to test.
-   * @returns {boolean}         - Whether element is covered by rule.
+   * @param  {string}  element - Element name to test.
+   * @return {boolean}         - Whether element is covered by rule.
    */
   has(element: string): boolean {
     return this.getName(element) !== undefined;

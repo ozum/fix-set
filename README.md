@@ -39,9 +39,15 @@ Possible use cases:
 * If no `prefixes` and `suffixes` provided, it is assumed all strings are included in rule except `exceptPrefixes` and `exceptSuffixes`.
 
 # Synopsis
+
+**TypeScript**
+```js
+import FixSet, { RuleConfig, FixSetConfig } from 'fix-set';
+```
+
+**JavaScript**
 ```js
 import FixSet from 'fix-set';
-import type { FixSetConfig, RuleConfig } from 'fix-set';  // Flow only
 ```
 
 --------------
@@ -161,9 +167,7 @@ would be skipped.</p>
 
 | Param | Type | Description |
 | --- | --- | --- |
-| [config] | <code>Object</code> | <p>Configuration.</p> |
-| [config.include] | [<code>RuleConfig</code>](#RuleConfig) | <p>Inclusion rule configuration.</p> |
-| [config.exclude] | [<code>RuleConfig</code>](#RuleConfig) | <p>Exclusion rule configuration.</p> |
+| [config] | [<code>FixSetConfig</code>](#FixSetConfig) | <p>Configuration.</p> |
 
 <a name="FixSet+getName"></a>
 
