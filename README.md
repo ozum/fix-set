@@ -57,7 +57,7 @@ import FixSet from 'fix-set';
 const fixSet = new FixSet({
   include: {
     prefixes:       'q',
-    exceptPrefixes: 'qX',
+    exceptPrefixes: 'qx',
     replacePrefix:  true,
     replaceSuffix:  true
   }
@@ -75,7 +75,7 @@ const otherHas   = fixSet.has('qxOther');           // false
 const fixSet = new FixSet({
   exclude: {
     prefixes:       'q',
-    exceptPrefixes: 'qX',
+    exceptPrefixes: 'qx',
     replacePrefix:  true,
     replaceSuffix:  true
   }
