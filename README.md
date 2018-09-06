@@ -227,7 +227,7 @@ and <code>exceptSuffixes</code>.</p>
 
 | Name | Type | Description |
 | --- | --- | --- |
-| element | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | <p>Strings which are covered by rule. They are compared by equal operator.</p> |
+| elements | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | <p>Strings which are covered by rule. They are compared by equal operator.</p> |
 | except | <code>string</code> \| <code>Array.&lt;string&gt;</code> \| <code>Set.&lt;string&gt;</code> | <p>Fields which are not covered by rule.</p> |
 | prefixes | <code>string</code> \| <code>RegExp</code> \| <code>Array.&lt;(string\|RegExp)&gt;</code> \| <code>Set.&lt;(string\|RegExp)&gt;</code> | <p>Strings which starts with given prefixes are covered by rule.</p> |
 | suffixes | <code>string</code> \| <code>RegExp</code> \| <code>Array.&lt;(string\|RegExp)&gt;</code> \| <code>Set.&lt;(string\|RegExp)&gt;</code> | <p>Strings which ends with given suffixes are covered by rule.</p> |
