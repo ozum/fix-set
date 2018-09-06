@@ -4,7 +4,7 @@
  * If no `prefixes` and `suffixes` provided, it is assumed all strings are included except `exceptPrefixes`
  * and `exceptSuffixes`.
  * @typedef  {Object} RuleConfig
- * @property {string|Array.<string>|Set.<string>}                      [element]             - Strings which are covered by rule. They are compared by equal operator.
+ * @property {string|Array.<string>|Set.<string>}                      [elements]            - Strings which are covered by rule. They are compared by equal operator.
  * @property {string|Array.<string>|Set.<string>}                      [except]              - Fields which are not covered by rule.
  * @property {string|RegExp|Array.<string|RegExp>|Set.<string|RegExp>} [prefixes]            - Strings which starts with given prefixes are covered by rule.
  * @property {string|RegExp|Array.<string|RegExp>|Set.<string|RegExp>} [suffixes]            - Strings which ends with given suffixes are covered by rule.
